@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './material-module';
 import { PuntosDeAtencionComponent } from './puntos-de-atencion/puntos-de-atencion.component';
+import { UsuariosPuntosdeAtencionComponent } from './usuarios-puntosde-atencion/usuarios-puntosde-atencion.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PuntosDeAtencionComponent,
-    PuntosDeAtencionComponent
+    PuntosDeAtencionComponent,
+    UsuariosPuntosdeAtencionComponent
   ],
   imports: [
     BrowserModule,
