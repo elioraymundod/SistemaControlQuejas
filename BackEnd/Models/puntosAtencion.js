@@ -11,5 +11,18 @@ module.exports={
                 else resolve(rows);
             })
         })
-    },    
+    },  
+    
+    updatePuntosAtencion(puntoAtencion){
+        return new Promise((resolve,reject)=>{
+            let query='UPDATE controlquejasdb.puntos_atencion SET codigo_estado = ?, nombre_punto_atencion=? WHERE codigo_punto_atencion = ?';
+            con.query(query,[puntoAtencion.codigo_estado,
+                puntoAtencion.nombre_punto_atencion,
+                puntoAtencion.codigo_punto_atencion],(err,rows)=>{
+                if(err) reject(err);
+                else resolve (true);
+
+            });
+        });
+    },
 }

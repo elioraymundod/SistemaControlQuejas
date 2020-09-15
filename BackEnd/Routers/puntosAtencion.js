@@ -16,4 +16,19 @@ router.get('/puntosAtencion',(req,res)=>{
 
 });
 
+router.put('/puntosAtencion',(req,res)=>{
+    puntosAtencion.updatePuntosAtencion(req.body)
+                    .then(puntosAtencion=>{
+                        res.status(200).send({
+                            mesage:'Se actualizaron los datos correctamente'
+                        });
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al actualizar datos'
+                        });
+                    });
+});
+
 module.exports= router;

@@ -11,6 +11,7 @@ import { PuntosAtencnionService } from './Services/puntosAtencion.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UsuariosPuntosdeAtencionService } from './Services/UsuariosPuntosdeAtencion.service';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { UsuariosPuntosdeAtencionService } from './Services/UsuariosPuntosdeAten
   ],
   providers: [
     PuntosAtencnionService,
-    UsuariosPuntosdeAtencionService
+    UsuariosPuntosdeAtencionService,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

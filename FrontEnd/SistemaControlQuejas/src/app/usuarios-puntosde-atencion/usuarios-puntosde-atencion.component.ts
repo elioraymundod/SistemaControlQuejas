@@ -9,7 +9,7 @@ import { UsuariosPuntosdeAtencionService } from '../Services/UsuariosPuntosdeAte
 })
 
 export class UsuariosPuntosdeAtencionComponent implements OnInit {
-  displayedColumns: string[] = ['region', 'nombrePuntoAtencion','usuario','correo','cargo', 'estadoPuntoAtencion', 'accion'];
+  displayedColumns: string[] = ['region', 'nombrePuntoAtencion','usuario','correo','cargo', 'estadoUsuario', 'accion'];
   dataSource: any;
   UsuariosPuntosdeAtencion: any[];
 
@@ -28,9 +28,3 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
 }
 }
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}

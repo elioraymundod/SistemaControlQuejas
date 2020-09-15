@@ -17,4 +17,8 @@ export class PuntosAtencnionService {
 
   }
 
+  public UpdatePuntoAtencion(puntoAtencion):Observable<any>{
+    return this.http.put(`${this.baseUrl}/puntosAtencion`,puntoAtencion)
+   }
+
 }
