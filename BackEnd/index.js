@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 
-const port=3000;
+const port=3308;
 
 //Settings
 app.set('port', process.env.PORT || port);
@@ -22,6 +22,7 @@ app.use(cors());
 app.use(morgan('dev'));
 //Router
 app.use(require('./Routers/puntosAtencion'));
+app.use(require('./Routers/UsuariosPuntosdeAtencion'));
 //app.use(require('./Routers/catalogos'));
 //app.use(require('./Routers/empleados'));
 //app.use(require('./Routers/usuarios'));

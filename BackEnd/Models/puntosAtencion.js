@@ -1,4 +1,4 @@
-const con = require('../Configs/con');
+const con = require('../Configs/cone');
 
 module.exports={
     getAll(){

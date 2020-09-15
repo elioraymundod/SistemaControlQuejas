@@ -10,6 +10,7 @@ import { UsuariosPuntosdeAtencionComponent } from './usuarios-puntosde-atencion/
 import { PuntosAtencnionService } from './Services/puntosAtencion.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UsuariosPuntosdeAtencionService } from './Services/UsuariosPuntosdeAtencion.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     DemoMaterialModule
   ],
   providers: [
-    PuntosAtencnionService
+    PuntosAtencnionService,
+    UsuariosPuntosdeAtencionService
   ],
   bootstrap: [AppComponent]
 })
