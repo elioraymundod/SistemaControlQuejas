@@ -38,3 +38,6 @@ INSERT INTO `datos_catalogos` VALUES (1, 1, 'Region Central', 'Región Central',
                                         (29, 8, 'Presentada', 'Presentada', '2020-09-10');
 
 INSERT INTO `puntos_atencion` VALUES (1, 1, 5, 'Punto naranja', '2020-09-10');
+
+INSERT INTO `usuarios_puntos_atencion` VALUES('12345678',5,19,1,'Vanessa Alexandra Grande Morales', 'Vane17', 'vanessa@gmail.com', '2020-09-15');
+INSERT INTO `usuarios_puntos_atencion` VALUES('87654321',5,18,1,'Karla leticia Gonzales Gonzales', 'KarlaGG', 'karla@gmail.com', '2020-09-16');

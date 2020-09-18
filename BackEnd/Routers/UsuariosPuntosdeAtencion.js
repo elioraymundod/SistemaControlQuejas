@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/UsuariosPuntosdeAtencion',(req,res)=>{
     UsuariosPuntosdeAtencion.getAll()
-                    .then(UsuariosPuntosdeAtencion=>{
+                    .then(UsuariosPuntosdeAtencion =>{
                         res.status(200).send(UsuariosPuntosdeAtencion);
                     })
                     .catch(err=>{

@@ -16,5 +16,8 @@ export class UsuariosPuntosdeAtencionService {
     return this.http.get<any>(`${this.baseUrl}/UsuariosPuntosdeAtencion`);
 
   }
+  public UpdatePuntoAtencion(UsuariosPuntosdeAtencion):Observable<any>{
+    return this.http.put(`${this.baseUrl}/UsuariosPuntosdeAtencion`,UsuariosPuntosdeAtencion)
+   }
 
 }
