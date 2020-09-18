@@ -7,7 +7,7 @@ INSERT INTO `catalogos` VALUES (1, 'Regiones', 'Regiones para los puntos de aten
                                 (7, 'Estados externos', 'Estados externos de una queja', '2020-09-10'),
                                 (8, 'Estados internos', 'Estados internos de una queja', '2020-09-10');
 
-INSERT INTO `datos_catalogos` VALUES (1, 1, 'Region Central', 'Región Central', '2020-09-10'),
+INSERT INTO `datos_catalogos` VALUES (1, 1, 'Región Central', 'Región Central', '2020-09-10'),
                                         (2, 1, 'Región Sur', 'Región Sur', '2020-09-10'),
                                         (3, 1, 'Región Nororiente', 'Región Nororiente', '2020-09-10'),
                                         (4, 1, 'Región Occidente', 'Región Occidente', '2020-09-10'),

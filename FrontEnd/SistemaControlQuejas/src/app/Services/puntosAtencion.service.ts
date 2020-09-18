@@ -21,4 +21,8 @@ export class PuntosAtencnionService {
     return this.http.put(`${this.baseUrl}/puntosAtencion`,puntoAtencion)
    }
 
+   public InsertPuntoAtencion(puntoAtencion):Observable<any>{
+    return this.http.post(`${this.baseUrl}/puntosAtencion`,puntoAtencion)
+   }
+
 }

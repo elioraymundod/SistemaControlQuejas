@@ -31,4 +31,19 @@ router.put('/puntosAtencion',(req,res)=>{
                     });
 });
 
+router.post('/puntosAtencion',(req,res)=>{
+    puntosAtencion.insertPuntoAtencion(req.body)
+                    .then(puntosAtencion=>{
+                        res.status(200).send({
+                            mesage:'Se creo el punto de atencion correctamente'
+                        });
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al crear un punto de atencion'
+                        });
+                    });
+});
+
 module.exports= router;

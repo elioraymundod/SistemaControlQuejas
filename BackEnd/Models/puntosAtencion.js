@@ -25,4 +25,15 @@ module.exports={
             });
         });
     },
+
+    insertPuntoAtencion(puntoAtencion){
+        return new Promise((resolve,reject)=>{
+            let query='INSERT INTO controlquejasdb.puntos_atencion SET ?';
+            con.query(query,[puntoAtencion],(err,rows)=>{
+                if(err) reject(err);
+                else resolve (true);
+            });
+        });
+    },
+
 }
