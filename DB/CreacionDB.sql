@@ -18,17 +18,6 @@ CREATE TABLE `datos_catalogos` (
   CONSTRAINT `codigo_catalogo_a` FOREIGN KEY (`codigo_catalogo`) REFERENCES `catalogos` (`codigo_catalogo`)
 ) ENGINE=InnoDB UTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `usuarios_puntos_atencion` (
-  `dpi_usuario` varchar(16) NOT NULL,
-  `codigo_estado` int NOT NULL,
-  `codigo_cargo` int NOT NULL,
-  `codigo_region` int NOT NULL,
-  `nombre` varchar(120) NOT NULL,
-  `usuario` varchar(20) NOT NULL,
-  `correo_electronico` varchar(50) NOT NULL,
-  `fecha_creacion` date NOT NULL,
-  PRIMARY KEY (`dpi_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `tipos_quejas` (
   `codigo_tipo_queja` int NOT NULL AUTO_INCREMENT,
@@ -36,7 +25,7 @@ CREATE TABLE `tipos_quejas` (
   `siglas` varchar(10) NOT NULL,
   `descripcion_tipo_queja` varchar(250) NOT NULL,
   `fecha_creacion` date NOT NULL,
-  PRIMARY KEY (`codigo_tipo_queja`)
+  PRIMARY KEY (`codigo_tipo_queja`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `puntos_atencion` (
@@ -47,6 +36,21 @@ CREATE TABLE `puntos_atencion` (
   `fecha_creacion` date NOT NULL,
   PRIMARY KEY (`codigo_punto_atencion`)
 ) ENGINE=InnoDB UTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `usuarios_puntos_atencion` (
+  `dpi_usuario` varchar(16) NOT NULL,
+  `codigo_estado` int NOT NULL,
+ `codigo_punto_atencion` int NOT NULL,
+  `codigo_cargo` int NOT NULL,
+  `codigo_region` int NOT NULL,
+  `nombre` varchar(120) NOT NULL,
+  `usuario` varchar(20) NOT NULL,
+  `correo_electronico` varchar(50) NOT NULL,
+  `fecha_creacion` date NOT NULL,
+  PRIMARY KEY (`dpi_usuario`),
+CONSTRAINT `codigo_punto_atencion_a` FOREIGN KEY (`codigo_punto_atencion`) REFERENCES `puntos_atencion` (`codigo_punto_atencion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 CREATE TABLE `quejas` (
   `codigo_queja` int NOT NULL AUTO_INCREMENT,
