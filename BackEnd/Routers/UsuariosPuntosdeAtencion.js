@@ -29,11 +29,11 @@ router.put('/UsuariosPuntosdeAtencion',(req,res)=>{
                         });
                     });
 });
-router.get('/Regiones/CodigoRegion/:Codigo_Region',(req,res)=>{
-    UsuariosPuntosdeAtencion.getPuntosAtencionByCodigo(req.params.Codigo_Region)
+router.get('/puntosAtencion/codigoRegion/:codigo_region',(req,res)=>{
+    UsuariosPuntosdeAtencion.getPuntosAtencionByCodigo(req.params.codigo_region)
                     .then(UsuariosPuntosdeAtencion =>{
                         res.status(200).send(UsuariosPuntosdeAtencion);
-                        console.log('el Res es: '+ res);
+                        console.log('Usuarios punto atencion es es: '+ UsuariosPuntosdeAtencion);
                         
                     })
                     .catch(err=>{

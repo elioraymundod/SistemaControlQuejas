@@ -37,7 +37,7 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private UsuariosPuntosdeAtencionService:UsuariosPuntosdeAtencionService,
-    private oficinaServices:PuntosAtencnionService,
+    private puntosAtencionService:PuntosAtencnionService,
     private _formBuilder: FormBuilder,
               private datePipe: DatePipe) 
              

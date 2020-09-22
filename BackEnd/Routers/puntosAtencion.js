@@ -46,4 +46,20 @@ router.post('/puntosAtencion',(req,res)=>{
                     });
 });
 
+router.get('/puntosAtencion/codigoRegion/:codigo_region',(req,res)=>{
+    puntosAtencion.getPuntosAtencionByCodigo(req.params.codigo_region)
+                    .then(puntosAtencion =>{
+                        res.status(200).send(puntosAtencion);
+                        console.log('Puntos atencion es es: '+ puntosAtencion);
+                        
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });
+
+});
+
 module.exports= router;

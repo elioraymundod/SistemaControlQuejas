@@ -29,18 +29,16 @@ module.exports={
         });
     },
 
-    getPuntosAtencionByCodigo(codigo_region){
+   getPuntosAtencionByCodigo(codigo_region){
         return new Promise((resolve,reject)=>{
-            let query='SELECT * FROM controlquejasdb.puntos_atencion WHERE codigo_region=?';
-            con.query( query,[ codigo_region
-
-            ],(err,rows)=> {
+            let query='SELECT * FROM controlquejasdb.puntos_atencion WHERE codigo_estado = 5 and codigo_region=?';
+            con.query( query,[codigo_region],(err,rows)=> {
                 
                 if(err) reject(err);
                 else resolve(rows);
             })
         })
-    },    
+    },   
 
 
         

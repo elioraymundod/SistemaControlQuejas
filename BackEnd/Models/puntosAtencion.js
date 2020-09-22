@@ -36,4 +36,13 @@ module.exports={
         });
     },
 
+    getPuntosAtencionByCodigo(codigo_region){
+        return new Promise((resolve,reject)=>{
+            con.query( 'SELECT * FROM controlquejasdb.puntos_atencion WHERE codigo_estado = 5 and codigo_region = ? ', codigo_region, (err,rows)=> {
+                
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    },   
 }
