@@ -3,14 +3,14 @@
   <div class="estiloTitulo">
       Catálogo de Usuarios de los puntos de atención
   </div>
-
   <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource">
+        
     
         <!-- Columna Region -->
         <ng-container matColumnDef="region">
           <th mat-header-cell *matHeaderCellDef> Región </th>
-          <td mat-cell *matCellDef="let element"> {{element.codigo_region}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.nombre_region}} </td>
         </ng-container>
         codigo_punto_atencion
         <!-- columna Nombre puntos de atencion -->
@@ -33,12 +33,12 @@
     <!-- Columna cargo -->
     <ng-container matColumnDef="cargo">
       <th mat-header-cell *matHeaderCellDef> Cargo </th>
-      <td mat-cell *matCellDef="let element"> {{element.codigo_cargo}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.cargo_usuario}} </td>
     </ng-container>
         <!-- Columna estado puntos de atencion -->
         <ng-container matColumnDef="estadoUsuario">
           <th mat-header-cell *matHeaderCellDef> Estado punto de atención </th>
-          <td mat-cell *matCellDef="let element"> {{element.codigo_estado}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.estado_punto_atencion}} </td>
         </ng-container>
         
     
@@ -51,17 +51,22 @@
             </span>
           </td>
         </ng-container>
-    
+        
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-    
+   
+      <div class="col">
+        <br>
+        <button mat-raised-button class="botones" (click)="agregarunUsuario()">Agregar un Usuario</button>
+      </div>
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
     </div>
 </mat-card>
  
 
-<!-- Modal -->
+<!-- Modal para modificar el usuario-->
 <div class="modal fade" id="modificarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -73,15 +78,24 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="modificarUsuarioGroup">
+          <mat-form-field class="col-lg-6 col-md-6 col-sm-12" style="display: none;">
+            <mat-label>Codigo Usuario</mat-label>
+            <input matInput  value="" formControlName="codigoUsuario" readonly>
+          </mat-form-field>
           <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
             <mat-label>Correo</mat-label>
             <input matInput  value="" formControlName="correoControl">
-          </mat-form-field>
+          </mat-form-field>     
+            <mat-form-field  class="col-lg-6 col-md-6 col-sm-12">
+              <mat-label>Cargo</mat-label>
+              <mat-select formControlName="cargoControl">
+                <mat-option *ngFor="let cargo of CargoUsuario" [value]="cargo.value" >
+                  {{cargo.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+         
           <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
-          <mat-label>Cargo</mat-label>
-            <input matInput  value="" formControlName="cargoControl">
-          </mat-form-field>
-          <mat-form-field appearance="fill" class="col-lg-6 col-md-6 col-sm-12">
             <mat-label>Estado Punto Atencion</mat-label>
             <mat-select formControlName="estadoControl">
               <mat-option *ngFor="let estado of estados" [value]="estado.value" >
@@ -90,10 +104,70 @@
             </mat-select>
           </mat-form-field>
         </form>
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarCambios(modificarUsuarioGroup.value)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para crear un Usuario-->
+<div class="modal fade" id="crearUsuario" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Crear un Usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="filtroRegionesGroup">
+          <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+            <mat-label>Regiones</mat-label>       
+            <mat-select formControlName="regionesControl" matNativeControl (ngModelChange)="aplicarFiltro($event)">
+              <mat-option *ngFor="let region of regiones" [value]="region.value" >
+                {{region.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+            <mat-label>Listado puntos de atencion</mat-label>
+            <input matInput  value="" formControlName="nombrepuntoControl">
+          </mat-form-field>
+        </form>    
+        <form [formGroup]="crearUsuarioGroup">
+            <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+              <mat-label>DPI</mat-label>
+              <input matInput  value="" formControlName="DPIControl" >
+            </mat-form-field>
+          <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+            <mat-label>Nombre de la Persona Asociada al DPI</mat-label>
+            <input matInput  value="" formControlName="NombreControl">
+          </mat-form-field>
+          <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+            <mat-label>Correo</mat-label>
+            <input matInput  value="" formControlName="correoControl">
+          </mat-form-field> 
+          <mat-form-field  class="col-lg-6 col-md-6 col-sm-12">
+            <mat-label>Cargo</mat-label>
+            <mat-select formControlName="cargoControl">
+              <mat-option *ngFor="let cargo of CargoUsuario" [value]="cargo.value" >
+                {{cargo.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>     
+        </form>
+        
+          <div>
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" >Guardar</button>
       </div>
     </div>
   </div>

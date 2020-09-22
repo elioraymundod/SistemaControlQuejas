@@ -17,7 +17,13 @@
 table {
     width: 100%;
   }
+  .botones {
+    background: #1369a0; 
+    color: white; 
+}
   
   ::ng-deep .cdk-overlay-container{
     z-index: 1200 !important;
+
+
 }

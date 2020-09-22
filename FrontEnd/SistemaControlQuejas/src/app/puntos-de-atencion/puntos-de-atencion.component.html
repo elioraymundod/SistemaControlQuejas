@@ -1,25 +1,25 @@
 <mat-card class="margen">
-    <div class="estiloTitulo">
-        Catálogo de los puntos de atención
+  <div class="estiloTitulo">
+      Catálogo de los puntos de atención
+  </div>
+  <br>
+  <div class="row col-lg-12 col-md-12 col-sm-12" >
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <form [formGroup]="filtroRegionesGroup">
+        <mat-form-field class="col-lg-12 col-md-12 col-sm-12">
+          <mat-label>Regiones</mat-label>
+          <mat-select formControlName="regionesControl" matNativeControl (ngModelChange)="aplicarFiltro($event)">
+            <mat-option *ngFor="let region of regiones" [value]="region.viewValue" >
+              {{region.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
     </div>
-    <br>
-    <div class="row col-lg-12 col-md-12 col-sm-12" >
-      <div class="col-lg-3 col-md-3 col-sm-3">
-        <form [formGroup]="filtroRegionesGroup">
-          <mat-form-field class="col-lg-12 col-md-12 col-sm-12">
-            <mat-label>Regiones</mat-label>
-            <mat-select formControlName="regionesControl" matNativeControl (ngModelChange)="aplicarFiltro($event)">
-              <mat-option *ngFor="let region of regiones" [value]="region.viewValue" >
-                {{region.viewValue}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </form>
-      </div>
-      <div class="col">
-        <button mat-raised-button class="botones" (click)="agregarPuntoAtencion()">Agregar punto de atencion</button>
-      </div>
+    <div class="col">
+      <button mat-raised-button class="botones" (click)="agregarPuntoAtencion()">Agregar punto de atencion</button>
     </div>
+  </div>
 
 
     <div class="mat-elevation-z8">

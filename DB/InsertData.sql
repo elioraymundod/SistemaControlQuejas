@@ -39,5 +39,8 @@ INSERT INTO `datos_catalogos` VALUES (1, 1, 'Región Central', 'Región Central'
 
 INSERT INTO `puntos_atencion` VALUES (1, 1, 5, 'Punto naranja', '2020-09-10');
 
-INSERT INTO `usuarios_puntos_atencion` VALUES('12345678',5,1,19,1,'Vanessa Alexandra Grande Morales', 'Vane17', 'vanessa@gmail.com', '2020-09-15');
-INSERT INTO `usuarios_puntos_atencion` VALUES('87654321',5,1,18,1,'Karla leticia Gonzales Gonzales', 'KarlaGG', 'karla@gmail.com', '2020-09-16');
+INSERT INTO `usuarios_puntos_atencion` VALUES(12345678,5,1,19,1,'Vanessa Alexandra Grande Morales', 'Vane17', 'vanessa@gmail.com', '2020-09-15');
+INSERT INTO `usuarios_puntos_atencion` VALUES(87654321,5,1,18,1,'Karla leticia Gonzales Gonzales', 'KarlaGG', 'karla@gmail.com', '2020-09-16');
+INSERT INTO `usuarios_puntos_atencion` VALUES(23456789,5,1,19,1,'Gerardo Molina Silva Joc', 'GerMSJ', 'gerardo@gmail.com', '2020-09-20');
+INSERT INTO `usuarios_puntos_atencion` VALUES(56789011,5,1,18,1,'Sol Sofia Miranda Lopez', 'Sofy234', 'sofiaa@gmail.com', '2020-09-20');
+INSERT INTO `usuarios_puntos_atencion` VALUES(098656545,5,1,18,2,'Jaime Godoy', 'JAGS', 'Jaime@gmail.com', '2020-09-20');

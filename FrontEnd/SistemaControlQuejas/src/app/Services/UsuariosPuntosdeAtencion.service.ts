@@ -19,5 +19,9 @@ export class UsuariosPuntosdeAtencionService {
   public UpdatePuntoAtencion(UsuariosPuntosdeAtencion):Observable<any>{
     return this.http.put(`${this.baseUrl}/UsuariosPuntosdeAtencion`,UsuariosPuntosdeAtencion)
    }
+  
+   public getPuntosAtencionByCodigo(CodigoRegion):Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/Regiones/CodigoRegion/${CodigoRegion}`);
+  }
 
 }
