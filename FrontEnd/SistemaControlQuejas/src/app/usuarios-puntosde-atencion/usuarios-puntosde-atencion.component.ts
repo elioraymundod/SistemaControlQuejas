@@ -3,19 +3,26 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { UsuariosPuntosdeAtencionService } from '../Services/UsuariosPuntosdeAtencion.service';
 import { DatePipe } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { strict } from 'assert';
 import { PuntosAtencnionService } from '../Services/puntosAtencion.service';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 declare let $: any;
 
 interface Opciones {
   value: number;
-  
   viewValue: string;
 }
 
+/** Error when invalid control is dirty, touched, or submitted. */
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'app-usuarios-puntosde-atencion',
@@ -26,14 +33,16 @@ interface Opciones {
 })
 
 export class UsuariosPuntosdeAtencionComponent implements OnInit {
-  displayedColumns: string[] = ['region', 'nombrePuntoAtencion','usuario','correo','cargo', 'estadoUsuario', 'accion'];
+  matcher = new MyErrorStateMatcher();
+  displayedColumns: string[] = ['nombrePuntoAtencion','usuario','correo','cargo', 'estadoUsuario', 'accion'];
   dataSource: any;
   UsuariosPuntosdeAtencion: any[];
   puntos:any[];
-  PuntosAtencionPorRegion:any[];
+  PuntosAtencionPorRegion:Opciones[];
   modificarUsuarioGroup:FormGroup;
   filtroRegionesGroup: FormGroup;
   crearUsuarioGroup: FormGroup;
+  codigoRegion: number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private UsuariosPuntosdeAtencionService:UsuariosPuntosdeAtencionService,
@@ -42,7 +51,7 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
               private datePipe: DatePipe) 
              
               {
-                //controles para modificar al usuario
+    //controles para modificar al usuario
       this.modificarUsuarioGroup = this._formBuilder.group({
         correoControl: new FormControl (''),
         cargoControl: new FormControl (''),
@@ -50,17 +59,17 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
         codigoUsuario: new FormControl('')    
      });
      this.filtroRegionesGroup = this._formBuilder.group({
-      regionesControl: new FormControl (''),
-      nombrepuntoControl: new FormControl ('')
+      //regionesControl: new FormControl (''),
+      //nombrepuntoControl: new FormControl ('')
     });
-//controles para agregar un usuario
+  //controles para agregar un usuario
      this.crearUsuarioGroup = this._formBuilder.group({
-      correoControl: new FormControl (''),
-      DPIControl: new FormControl(''),
-      NombreControl: new FormControl(''),
-      cargoControl: new FormControl (''),
-      regionesControl: new FormControl (''),
-     
+      correoControl: new FormControl ('', Validators.required),
+      DPIControl: new FormControl('', Validators.required),
+      NombreControl: new FormControl('', Validators.required),
+      cargoControl: new FormControl ('', Validators.required),
+      regionesControl: new FormControl ('', Validators.required),
+      puntosAtencionControl: new FormControl ('', Validators.required)
 
      });
     }
@@ -77,19 +86,16 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
       console.log(err);
     });
     // Indicar que se inicie con la region central seleccionada por defecto
-    this.filtroRegionesGroup.get('regionesControl').setValue('Region Central');
-    this.ObtenerRegionesPorCodigo();
+    //this.filtroRegionesGroup.get('regionesControl').setValue('Region Central');
 }
   // Metodo para abrir el modal de modificar y enviar los datos de un punto de atencion seleccionado
 modificarUsuario(UsuarioPuntoAtencion) {
   $('#modificarUsuario').modal('show');
   console.log(UsuarioPuntoAtencion);
   this.modificarUsuarioGroup.get('correoControl').setValue(UsuarioPuntoAtencion.correo_electronico);
-this.modificarUsuarioGroup.get('cargoControl').setValue(UsuarioPuntoAtencion.codigo_cargo);
- this.modificarUsuarioGroup.get('estadoControl').setValue(UsuarioPuntoAtencion.codigo_estado); 
- this.modificarUsuarioGroup.get('codigoUsuario').setValue(UsuarioPuntoAtencion.dpi_usuario);
-
-
+  this.modificarUsuarioGroup.get('cargoControl').setValue(UsuarioPuntoAtencion.codigo_cargo);
+  this.modificarUsuarioGroup.get('estadoControl').setValue(UsuarioPuntoAtencion.codigo_estado); 
+  this.modificarUsuarioGroup.get('codigoUsuario').setValue(UsuarioPuntoAtencion.dpi_usuario);
 } 
 
 // Metodo para guardar los cambios al modificar un usuario
@@ -101,8 +107,7 @@ guardarCambios (usuariopuntoAtencion) {
     codigo_cargo:usuariopuntoAtencion.cargoControl,
     codigo_estado:usuariopuntoAtencion.estadoControl,
     dpi_usuario:usuariopuntoAtencion.codigoUsuario
-    
-   }
+  }
   if(PuntoAtencion.codigo_estado){
     this.UsuariosPuntosdeAtencionService.UpdatePuntoAtencion(PuntoAtencion).subscribe(res=>{
       console.log(res);
@@ -135,6 +140,42 @@ public aplicarFiltro (event: Event) {
   
 }
 
+// Metodo para mostrar los puntos de atencion en base a la region seleccionada
+public seleccionarRegion() {
+  this.crearUsuarioGroup.get('puntosAtencionControl').reset();
+  this.codigoRegion = this.crearUsuarioGroup.get('regionesControl').value;
+  this.puntosAtencionService.getPuntosAtencionByCodigo(this.codigoRegion).subscribe(res=>{
+  this.PuntosAtencionPorRegion = res;
+  console.log(this.PuntosAtencionPorRegion)
+  }, err=>{
+    console.error(err);
+  });
+
+}
+
+// Metodo para obtener el nombre y correo en base a un nit
+obtenerNombreAndCorreo() {
+  let dpi = this.crearUsuarioGroup.get('DPIControl').value;
+  this.UsuariosPuntosdeAtencionService.getUsuarioByDpi(dpi).subscribe(res=>{
+    console.log(res);
+    try {
+      this.crearUsuarioGroup.get('NombreControl').setValue(res[0].nombre);
+      this.crearUsuarioGroup.get('correoControl').setValue(res[0].correo_electronico);
+    } catch(e) {
+      this.crearUsuarioGroup.get('NombreControl').reset();
+      this.crearUsuarioGroup.get('correoControl').reset();
+      Swal.fire({
+        titleText: `El DPI ingresado no es valido`,
+        icon: 'error',
+        showCloseButton: true,
+        showConfirmButton: false
+      });
+    }
+  }, err=>{
+    console.error(err);
+  })
+}
+
 
 //listado de opciones para estados
 estados: Opciones [] = [
@@ -158,24 +199,15 @@ regiones: Opciones [] = [
   {value: 4, viewValue: 'Región Occidente'}
 ];
 
-//Actualizar Datos Tabla
-refrescarTabla(){
-this.UsuariosPuntosdeAtencionService.getUsuariosPuntosdeAtencion().subscribe(res=>{
-this.UsuariosPuntosdeAtencion = res;
-this.dataSource = new MatTableDataSource(this.UsuariosPuntosdeAtencion);
-console.log(this.UsuariosPuntosdeAtencion);
-},err=>{
-console.log(err);
-});
-}
-//obtener los puntos de atencion por un código
-ObtenerRegionesPorCodigo(){
-this.UsuariosPuntosdeAtencionService.getPuntosAtencionByCodigo(1).subscribe(res=>{
-  this.PuntosAtencionPorRegion=res;
-  console.log('Regiones por codigo '+ res);
-},err=>{
-  console.log(err);
-  });
-}
- 
+  //Actualizar Datos Tabla
+  refrescarTabla(){
+    this.UsuariosPuntosdeAtencionService.getUsuariosPuntosdeAtencion().subscribe(res=>{
+    this.UsuariosPuntosdeAtencion = res;
+    this.dataSource = new MatTableDataSource(this.UsuariosPuntosdeAtencion);
+    console.log(this.UsuariosPuntosdeAtencion);
+    },err=>{
+    console.log(err);
+    });
+  }
+
 }

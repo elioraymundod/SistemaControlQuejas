@@ -3,13 +3,13 @@ const con = require('../Configs/cone');
 module.exports={
     getAll(){
         return new Promise((resolve,reject)=>{
-            con.query( 'SELECT upa.*, ca.nombre as nombre_region, caaaa.nombre as cargo_usuario, caa.nombre as estado_punto_atencion, caaa.nombre_punto_atencion as nombre_punto, pa.nombre_punto_atencion '+
-              'FROM controlquejasdb.usuarios_puntos_atencion as upa '+ 
-                'inner join controlquejasdb.datos_catalogos as ca on upa.codigo_region = ca.codigo_dato_catalogo '+
-                'inner join controlquejasdb.datos_catalogos as caaaa on upa.codigo_cargo = caaaa.codigo_dato_catalogo '+
-                'inner join controlquejasdb.datos_catalogos as caa on upa.codigo_estado = caa.codigo_dato_catalogo '+
-                'inner join controlquejasdb.puntos_atencion as caaa on upa.codigo_punto_atencion = caaa.codigo_punto_atencion '+
-                'inner join controlquejasdb.puntos_atencion as pa on upa.codigo_region = pa.codigo_punto_atencion',(err,rows)=> {
+            con.query( 'select upa.*, pa.nombre_punto_atencion as nombre_punto_atencion, us.nombre as nombre_usuario, ' +
+            'ca.descripcion as nombre_cargo, es.descripcion as nombre_estado ' + 
+            'from controlquejasdb.usuarios_puntos_atencion as upa ' +
+            'inner join controlquejasdb.puntos_atencion as pa on upa.codigo_punto = pa.codigo_punto_atencion ' +
+            'inner join controlquejasdb.usuarios as us on upa.dpi_usuario = us.dpi_usuario ' +
+            'inner join controlquejasdb.datos_catalogos as ca on upa.codigo_cargo = ca.codigo_dato_catalogo ' +
+            'inner join controlquejasdb.datos_catalogos as es on upa.codigo_estado = es.codigo_dato_catalogo',(err,rows)=> {
                 if(err) reject(err);
                 else resolve(rows);
             })
@@ -38,8 +38,16 @@ module.exports={
                 else resolve(rows);
             })
         })
-    },   
-
-
+    },  
+    
+    getUsuariosByDpi(dpi_usuario){
+        return new Promise((resolve,reject)=>{
+            let query='select * from controlquejasdb.usuarios where dpi_usuario =?';
+            con.query( query,[dpi_usuario],(err,rows)=> {
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    },  
         
     }

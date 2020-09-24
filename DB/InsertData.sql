@@ -5,7 +5,8 @@ INSERT INTO `catalogos` VALUES (1, 'Regiones', 'Regiones para los puntos de aten
                                 (5, 'Medios de ingreso de quejas', 'Medios por los cuales se puede ingresar una queja', '2020-09-10'),
                                 (6, 'Tipos de creadores de quejas', 'Tipos que pueden crear una queja', '2020-09-10'),
                                 (7, 'Estados externos', 'Estados externos de una queja', '2020-09-10'),
-                                (8, 'Estados internos', 'Estados internos de una queja', '2020-09-10');
+                                (8, 'Estados internos', 'Estados internos de una queja', '2020-09-10'),
+								(9, 'Roles', 'Roles', '2020-09-10');
 
 INSERT INTO `datos_catalogos` VALUES (1, 1, 'Región Central', 'Región Central', '2020-09-10'),
                                         (2, 1, 'Región Sur', 'Región Sur', '2020-09-10'),
@@ -35,12 +36,21 @@ INSERT INTO `datos_catalogos` VALUES (1, 1, 'Región Central', 'Región Central'
                                         (26, 6, 'Cliente', 'Cliente', '2020-09-10'),
                                         (27, 6, 'Contribuyente', 'Contribuyente', '2020-09-10'),
                                         (28, 7, 'Presentada', 'Presentada', '2020-09-10'),
-                                        (29, 8, 'Presentada', 'Presentada', '2020-09-10');
+                                        (29, 8, 'Presentada', 'Presentada', '2020-09-10'),
+										(30, 9, 'Administrador', 'Administrador', '2020-09-23'),
+										(31, 9, 'Operador', 'Operador', '2020-09-23'),
+										(32, 9, 'Centralizador', 'Centralizador', '2020-09-23'),
+										(33, 9, 'Receptor', 'Receptor', '2020-09-23');
 
 INSERT INTO `puntos_atencion` VALUES (1, 1, 5, 'Punto naranja', '2020-09-10');
+INSERT INTO `puntos_atencion` VALUES (2, 1, 5, 'Punto morado', '2020-09-10');
+INSERT INTO `puntos_atencion` VALUES (3, 2, 5, 'Punto verde', '2020-09-10');
+INSERT INTO `puntos_atencion` VALUES (4, 3, 5, 'Punto blanco', '2020-09-10');
+INSERT INTO `puntos_atencion` VALUES (5, 4, 5, 'Punto amarillo', '2020-09-10');
+INSERT INTO `puntos_atencion` VALUES (6, 4, 5, 'Punto dorado', '2020-09-10');
 
-INSERT INTO `usuarios_puntos_atencion` VALUES(12345678,5,1,19,1,'Vanessa Alexandra Grande Morales', 'Vane17', 'vanessa@gmail.com', '2020-09-15');
-INSERT INTO `usuarios_puntos_atencion` VALUES(87654321,5,1,18,1,'Karla leticia Gonzales Gonzales', 'KarlaGG', 'karla@gmail.com', '2020-09-16');
-INSERT INTO `usuarios_puntos_atencion` VALUES(23456789,5,1,19,1,'Gerardo Molina Silva Joc', 'GerMSJ', 'gerardo@gmail.com', '2020-09-20');
-INSERT INTO `usuarios_puntos_atencion` VALUES(56789011,5,1,18,1,'Sol Sofia Miranda Lopez', 'Sofy234', 'sofiaa@gmail.com', '2020-09-20');
-INSERT INTO `usuarios_puntos_atencion` VALUES(098656545,5,1,18,2,'Jaime Godoy', 'JAGS', 'Jaime@gmail.com', '2020-09-20');
+INSERT INTO `usuarios` VALUES(11111111,30,'Vanessa Alexandra Grande Morales', 'Vane17', 'Dios es amor', '2020-09-15');
+INSERT INTO `usuarios` VALUES(22222222,31,'Karla leticia Gonzales Gonzales', 'KarlaGG', '1234', '2020-09-16');
+INSERT INTO `usuarios` VALUES(33333333,32,'Gerardo Molina Silva Joc', 'GerMSJ', '1234', '2020-09-20');
+INSERT INTO `usuarios` VALUES(44444444,33,'Sol Sofia Miranda Lopez', 'Sofy234', '1234', '2020-09-20');
+INSERT INTO `usuarios` VALUES(55555555,33,'Jaime Godoy', 'JAGS', '1234', '2020-09-20');

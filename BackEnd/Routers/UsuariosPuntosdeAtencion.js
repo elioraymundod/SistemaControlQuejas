@@ -45,5 +45,20 @@ router.get('/puntosAtencion/codigoRegion/:codigo_region',(req,res)=>{
 
 });
 
+router.get('/usuario/dpi/:dpi_usuario',(req,res)=>{
+    UsuariosPuntosdeAtencion.getUsuariosByDpi(req.params.dpi_usuario)
+                    .then(UsuariosPuntosdeAtencion =>{
+                        res.status(200).send(UsuariosPuntosdeAtencion);
+                        
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });
+
+});
+
 
 module.exports= router;

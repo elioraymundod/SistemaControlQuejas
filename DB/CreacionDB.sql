@@ -16,7 +16,7 @@ CREATE TABLE `datos_catalogos` (
   `fecha_creacion` date NOT NULL,
   PRIMARY KEY (`codigo_dato_catalogo`),
   CONSTRAINT `codigo_catalogo_a` FOREIGN KEY (`codigo_catalogo`) REFERENCES `catalogos` (`codigo_catalogo`)
-) ENGINE=InnoDB UTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 CREATE TABLE `tipos_quejas` (
@@ -35,22 +35,31 @@ CREATE TABLE `puntos_atencion` (
   `nombre_punto_atencion` varchar(120) NOT NULL,
   `fecha_creacion` date NOT NULL,
   PRIMARY KEY (`codigo_punto_atencion`)
-) ENGINE=InnoDB UTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `usuarios_puntos_atencion` (
+CREATE TABLE `usuarios` (
   `dpi_usuario` varchar(16) NOT NULL,
-  `codigo_estado` int NOT NULL,
- `codigo_punto_atencion` int NOT NULL,
-  `codigo_cargo` int NOT NULL,
-  `codigo_region` int NOT NULL,
+  `rol` int NOT NULL,
   `nombre` varchar(120) NOT NULL,
   `usuario` varchar(20) NOT NULL,
-  `correo_electronico` varchar(50) NOT NULL,
+  `password` varchar(30) NOT NULL,
   `fecha_creacion` date NOT NULL,
-  PRIMARY KEY (`dpi_usuario`),
-CONSTRAINT `codigo_punto_atencion_a` FOREIGN KEY (`codigo_punto_atencion`) REFERENCES `puntos_atencion` (`codigo_punto_atencion`)
+  PRIMARY KEY (`dpi_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `usuarios_puntos_atencion` (
+  `codigo_usuario_punto` int NOT NULL AUTO_INCREMENT,
+  `codigo_estado` int NOT NULL,
+  `codigo_punto` int NOT NULL,
+  `dpi_usuario` varchar(16) NOT NULL, 
+  `codigo_cargo` int NOT NULL, 
+  `correo_electronico` varchar(50) NOT NULL,
+  `fecha_creacion` date NOT NULL,
+  `fecha_modificacion` date NOT NULL,
+  PRIMARY KEY (`codigo_usuario_punto`),
+  CONSTRAINT `codigo_punto_a` FOREIGN KEY (`codigo_punto`) REFERENCES `puntos_atencion` (`codigo_punto_atencion`),
+  CONSTRAINT `dpi_usuario_a` FOREIGN KEY (`dpi_usuario`) REFERENCES `usuarios` (`dpi_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `quejas` (
   `codigo_queja` int NOT NULL AUTO_INCREMENT,
