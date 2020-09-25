@@ -41,11 +41,12 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
   filtroRegionesGroup: FormGroup;
   crearUsuarioGroup: FormGroup;
   codigoRegion: number;
- 
+  date: Date;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private UsuariosPuntosdeAtencionService:UsuariosPuntosdeAtencionService,
-    private puntosAtencionService:PuntosAtencnionService,
-    private _formBuilder: FormBuilder,
+              private puntosAtencionService:PuntosAtencnionService,
+              private _formBuilder: FormBuilder,
               private datePipe: DatePipe) 
              
               {
@@ -71,8 +72,8 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
       cargooControlObtenido: new FormControl('')
      
      });  
-    
-              }
+     this.date = new Date();
+}
   
   // Obtener los Usuarios de base de datos
   ngOnInit(): void {
@@ -129,9 +130,78 @@ guardarCambios (usuariopuntoAtencion) {
 
 
 //Método para abrir el Modal para crear un punto de atencion
-agregarunUsuario() {
-  $('#crearUsuario').modal('show');
+public agregarunUsuario() {
+    $('#crearUsuario').modal('show');
 
+}
+
+
+public guardarUsuario(data) {
+  console.log(data.puntosAtencionControl);
+  if (data.cargoControl == 14 || data.cargoControl == 15 || data.cargoControl == 16 || data.cargoControl == 18 || data.cargoControl == 19 ) {
+    this.UsuariosPuntosdeAtencionService.getUsuarioActivoEnOtroPunto(data.DPIControl).subscribe(res=>{
+      if (res.length != 0) {
+        console.log(res)
+        Swal.fire({
+          titleText: `Error al guardar los datos, el usuario ya existe en el punto de atención "${res[0].nombre_punto}"`,
+          icon: 'error',
+          showCloseButton: true,
+          showConfirmButton: false
+        });
+      } else {
+        const usuario = {
+          codigo_usuario_punto: 0,
+          codigo_estado: 5,
+          codigo_punto: data.puntosAtencionControl,
+          dpi_usuario: data.DPIControl,
+          codigo_cargo: data.cargoControl,
+          correo_electronico: data.correoControl,
+          fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
+          fecha_modificacion: ""
+        }
+
+        this.UsuariosPuntosdeAtencionService.insertUsuarioPuntoAtencion(usuario).subscribe(res=>{
+          $('#crearUsuario').modal('hide');
+          this.crearUsuarioGroup.reset();
+          Swal.fire({
+            titleText: `Se guardaron correctamente los datos del usuario para el punto de atención`,
+            icon: 'success',
+            showCloseButton: true,
+            showConfirmButton: false
+          });
+        }, err => {
+          console.error(err)
+        })
+      }
+    }, err=>{
+      console.error(err)
+    })
+  } else {
+    const usuario = {
+      codigo_usuario_punto: 0,
+      codigo_estado: 5,
+      codigo_punto: data.puntosAtencionControl,
+      dpi_usuario: data.DPIControl,
+      codigo_cargo: data.cargoControl,
+      correo_electronico: data.correoControl,
+      fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
+      fecha_modificacion: ""
+      }
+    this.UsuariosPuntosdeAtencionService.insertUsuarioPuntoAtencion(usuario).subscribe(res=>{
+      $('#crearUsuario').modal('hide');
+      this.crearUsuarioGroup.reset();
+      Swal.fire({
+        titleText: `Se guardaron correctamente los datos del usuario para el punto de atención`,
+        icon: 'success',
+        showCloseButton: true,
+        showConfirmButton: false
+      });
+  }, err=> {
+    console.error(err)
+  })
+  }
+
+  this.refrescarTabla();
 }
 /*
 //Método para guardar un Guardar un usuario punto de atencion

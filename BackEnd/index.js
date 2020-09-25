@@ -23,10 +23,8 @@ app.use(morgan('dev'));
 //Router
 app.use(require('./Routers/puntosAtencion'));
 app.use(require('./Routers/UsuariosPuntosdeAtencion'));
-//app.use(require('./Routers/catalogos'));
-//app.use(require('./Routers/empleados'));
-//app.use(require('./Routers/usuarios'));
-//Starting server
+app.use(require('./Routers/auth'));
+
 
 app.listen(app.get('port'),()=>{
     console.log(`Server rum on port ${app.get('port')}`)

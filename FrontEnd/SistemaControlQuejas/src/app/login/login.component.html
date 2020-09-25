@@ -1,0 +1,21 @@
+
+<mat-card class="margen">
+    <div style="text-align: center;">
+        <img src="https://icon-library.com/images/login-icon-png/login-icon-png-2.jpg" width="30%" height="30%">
+    </div>
+    <br/>
+    <form [formGroup]="loginFormGroup">
+        <mat-form-field class="col-lg-12 col-md-12 col-sm-12">
+            <mat-label>Usuario</mat-label>
+            <input matInput autocomplete="off" formControlName="user" required>
+        </mat-form-field>
+        <mat-form-field class="col-lg-12 col-md-12 col-sm-12">
+            <mat-label>Contraseña</mat-label>
+            <input type="password" matInput formControlName="password" required>
+        </mat-form-field>
+        <br/><br/>
+        <div style="text-align: center;">
+            <button type="button" class="btn btn-primary" (click)="onLogin(loginFormGroup.value)">Iniciar sesión</button>
+        </div>
+    </form>
+</mat-card>

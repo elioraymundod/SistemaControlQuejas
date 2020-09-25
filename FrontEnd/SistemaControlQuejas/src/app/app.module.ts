@@ -12,12 +12,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UsuariosPuntosdeAtencionService } from './Services/UsuariosPuntosdeAtencion.service';
 import { DatePipe } from '@angular/common';
+import { LoginComponent } from './login/login.component';
+import { AuthService } from './Services/auth.service';
+import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PuntosDeAtencionComponent,
-    UsuariosPuntosdeAtencionComponent
+    UsuariosPuntosdeAtencionComponent,
+    LoginComponent,
+    MenuPrincipalComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +35,8 @@ import { DatePipe } from '@angular/common';
   providers: [
     PuntosAtencnionService,
     UsuariosPuntosdeAtencionService,
-    DatePipe
+    DatePipe,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

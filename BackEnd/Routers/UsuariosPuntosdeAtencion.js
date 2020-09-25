@@ -45,6 +45,21 @@ router.get('/puntosAtencion/codigoRegion/:codigo_region',(req,res)=>{
 
 });
 
+router.get('/usuario/activo/otroPunto/:dpi_usuario',(req,res)=>{
+    UsuariosPuntosdeAtencion.getUsuarioActivoEnOtroPunto(req.params.dpi_usuario)
+                    .then(UsuariosPuntosdeAtencion =>{
+                        res.status(200).send(UsuariosPuntosdeAtencion);
+                    
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });
+
+});
+
 router.get('/usuario/dpi/:dpi_usuario',(req,res)=>{
     UsuariosPuntosdeAtencion.getUsuariosByDpi(req.params.dpi_usuario)
                     .then(UsuariosPuntosdeAtencion =>{
@@ -61,21 +76,6 @@ router.get('/usuario/dpi/:dpi_usuario',(req,res)=>{
 });
 
 
-/*obtener el codigo cargo para realizar la evaluacion de usuarios
-router.get('/usuario/cargo/:codigo_cargo',(req,res)=>{
-    UsuariosPuntosdeAtencion.getUsuariosByCargo(req.params.codigo_cargo)
-                    .then(UsuariosPuntosdeAtencion =>{console.log('el codigo cargo es: '+ res);
-                        res.status(200).send(UsuariosPuntosdeAtencion);
-                        console.log('el codigo cargo es: '+ UsuariosPuntosdeAtencion);
-                    })
-                    .catch(err=>{
-                        console.error(err);
-                        res.status(500).send({
-                            mesage:'Error al obtener datos'
-                        });
-                    });           
-
-});
 //codigo para guardar un usuariopuntoantencion
 router.post('/UsuariosPuntosdeAtencion',(req,res)=>{
     UsuariosPuntosdeAtencion.insertUsuarioPuntoAtencion(req.body)
@@ -90,6 +90,6 @@ router.post('/UsuariosPuntosdeAtencion',(req,res)=>{
                             mesage:'Error al crear el usuario'
                         });
                     });
-});*/
+});
 
 module.exports= router;

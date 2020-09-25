@@ -49,10 +49,21 @@ module.exports={
             })
         })
     },  
+
+    getUsuarioActivoEnOtroPunto(dpi_usuario){
+        return new Promise((resolve,reject)=>{
+            let query='select us.*, cat.nombre_punto_atencion as nombre_punto ' +
+            'from controlquejasdb.usuarios_puntos_atencion as us ' +
+            'inner join controlquejasdb.puntos_atencion as cat on us.codigo_punto = cat.codigo_punto_atencion ' +
+            'where dpi_usuario = ? and (codigo_cargo = 14 or codigo_cargo = 15 or codigo_cargo = 16 or codigo_cargo = 18 or codigo_cargo = 19)';
+            con.query( query,[dpi_usuario],(err,rows)=> {
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    },  
      
    
-
-/*
     insertUsuarioPuntoAtencion(UsuarioPuntoAtencion){
         return new Promise((resolve,reject)=>{
             let query='INSERT INTO controlquejasdb.usuarios_puntos_atencion SET ?';
@@ -61,5 +72,5 @@ module.exports={
                 else resolve (true);
             });
         });
-    },*/
-    }
+    },
+}

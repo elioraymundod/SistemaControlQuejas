@@ -55,7 +55,7 @@ CREATE TABLE `usuarios_puntos_atencion` (
   `codigo_cargo` int NOT NULL, 
   `correo_electronico` varchar(50) NOT NULL,
   `fecha_creacion` date NOT NULL,
-  `fecha_modificacion` date NOT NULL,
+  `fecha_modificacion` date,
   PRIMARY KEY (`codigo_usuario_punto`),
   CONSTRAINT `codigo_punto_a` FOREIGN KEY (`codigo_punto`) REFERENCES `puntos_atencion` (`codigo_punto_atencion`),
   CONSTRAINT `dpi_usuario_a` FOREIGN KEY (`dpi_usuario`) REFERENCES `usuarios` (`dpi_usuario`)
