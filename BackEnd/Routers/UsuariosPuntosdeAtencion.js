@@ -56,9 +56,40 @@ router.get('/usuario/dpi/:dpi_usuario',(req,res)=>{
                         res.status(500).send({
                             mesage:'Error al obtener datos'
                         });
-                    });
+                    });           
 
 });
 
+
+/*obtener el codigo cargo para realizar la evaluacion de usuarios
+router.get('/usuario/cargo/:codigo_cargo',(req,res)=>{
+    UsuariosPuntosdeAtencion.getUsuariosByCargo(req.params.codigo_cargo)
+                    .then(UsuariosPuntosdeAtencion =>{console.log('el codigo cargo es: '+ res);
+                        res.status(200).send(UsuariosPuntosdeAtencion);
+                        console.log('el codigo cargo es: '+ UsuariosPuntosdeAtencion);
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });           
+
+});
+//codigo para guardar un usuariopuntoantencion
+router.post('/UsuariosPuntosdeAtencion',(req,res)=>{
+    UsuariosPuntosdeAtencion.insertUsuarioPuntoAtencion(req.body)
+                    .then(UsuariosPuntosdeAtencion=>{
+                        res.status(200).send({
+                            mesage:'Se creo el usuario correctamente'
+                        });
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al crear el usuario'
+                        });
+                    });
+});*/
 
 module.exports= router;

@@ -49,5 +49,17 @@ module.exports={
             })
         })
     },  
-        
+     
+   
+
+/*
+    insertUsuarioPuntoAtencion(UsuarioPuntoAtencion){
+        return new Promise((resolve,reject)=>{
+            let query='INSERT INTO controlquejasdb.usuarios_puntos_atencion SET ?';
+            con.query(query,[UsuarioPuntoAtencion],(err,rows)=>{
+                if(err) reject(err);
+                else resolve (true);
+            });
+        });
+    },*/
     }

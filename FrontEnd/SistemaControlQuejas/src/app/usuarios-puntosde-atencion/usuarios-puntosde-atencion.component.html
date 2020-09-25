@@ -16,7 +16,7 @@
         <!-- columna Nombre puntos de atencion -->
         <ng-container matColumnDef="nombrePuntoAtencion">
           <th mat-header-cell *matHeaderCellDef> Nombre del punto de atención </th>
-          <td mat-cell *matCellDef="let element"> {{element. nombre_punto}} </td>
+          <td mat-cell *matCellDef="let element"> {{element. nombre_punto_atencion}} </td>
         </ng-container>
 
     <!-- Columna Nombre del usuario -->
@@ -24,7 +24,7 @@
       <th mat-header-cell *matHeaderCellDef> Nombre Usuario </th>
       <td mat-cell *matCellDef="let element"> {{element.nombre_usuario}} </td>
     </ng-container>
-
+    
     <!-- Columna correo del usuario -->
      <ng-container matColumnDef="correo">
       <th mat-header-cell *matHeaderCellDef> Correo </th>
@@ -33,12 +33,12 @@
     <!-- Columna cargo -->
     <ng-container matColumnDef="cargo">
       <th mat-header-cell *matHeaderCellDef> Cargo </th>
-      <td mat-cell *matCellDef="let element"> {{element.cargo_usuario}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.nombre_cargo}} </td>
     </ng-container>
         <!-- Columna estado puntos de atencion -->
         <ng-container matColumnDef="estadoUsuario">
           <th mat-header-cell *matHeaderCellDef> Estado punto de atención </th>
-          <td mat-cell *matCellDef="let element"> {{element.estado_punto_atencion}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.nombre_estado}} </td>
         </ng-container>
         
     
@@ -139,7 +139,7 @@
           </mat-form-field>
             <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
               <mat-label>DPI</mat-label>
-              <input matInput  value="" formControlName="DPIControl" (blur)="obtenerNombreAndCorreo()">
+              <input matInput  value="" formControlName="DPIControl" (blur)="obtenerNombreAndCorreo()" >
             </mat-form-field>
           <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
             <mat-label>Nombre de la Persona Asociada al DPI</mat-label>
@@ -148,20 +148,17 @@
           <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
             <mat-label>Correo</mat-label>
             <input matInput formControlName="correoControl" placeholder="correo@ejemplo.com">
-          </mat-form-field> 
+          </mat-form-field>       
+      
           <mat-form-field  class="col-lg-6 col-md-6 col-sm-12">
             <mat-label>Cargo</mat-label>
-            <mat-select formControlName="cargoControl">
+            <mat-select formControlName="cargoControl" matNativeControl (ngModelChange)="seleccionarCargo()">
               <mat-option *ngFor="let cargo of CargoUsuario" [value]="cargo.value" >
                 {{cargo.viewValue}}
               </mat-option>
             </mat-select>
           </mat-form-field>     
-        </form>
-        
-          <div>
-  
-      </div>
+        </form>        
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-primary" [disabled]='crearUsuarioGroup.invalid'>Guardar</button>

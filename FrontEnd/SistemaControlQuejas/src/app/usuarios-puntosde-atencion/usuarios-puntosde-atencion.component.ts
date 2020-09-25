@@ -3,11 +3,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { UsuariosPuntosdeAtencionService } from '../Services/UsuariosPuntosdeAtencion.service';
 import { DatePipe } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { strict } from 'assert';
 import { PuntosAtencnionService } from '../Services/puntosAtencion.service';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { isGeneratedFile } from '@angular/compiler/src/aot/util';
+
+
 
 declare let $: any;
 
@@ -17,12 +20,6 @@ interface Opciones {
 }
 
 /** Error when invalid control is dirty, touched, or submitted. */
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
 
 @Component({
   selector: 'app-usuarios-puntosde-atencion',
@@ -32,8 +29,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 })
 
+
 export class UsuariosPuntosdeAtencionComponent implements OnInit {
-  matcher = new MyErrorStateMatcher();
+ 
   displayedColumns: string[] = ['nombrePuntoAtencion','usuario','correo','cargo', 'estadoUsuario', 'accion'];
   dataSource: any;
   UsuariosPuntosdeAtencion: any[];
@@ -43,7 +41,7 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
   filtroRegionesGroup: FormGroup;
   crearUsuarioGroup: FormGroup;
   codigoRegion: number;
-
+ 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private UsuariosPuntosdeAtencionService:UsuariosPuntosdeAtencionService,
     private puntosAtencionService:PuntosAtencnionService,
@@ -64,15 +62,18 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
     });
   //controles para agregar un usuario
      this.crearUsuarioGroup = this._formBuilder.group({
-      correoControl: new FormControl ('', Validators.required),
+      correoControl: new FormControl ('', [Validators.required,Validators.email]),
       DPIControl: new FormControl('', Validators.required),
       NombreControl: new FormControl('', Validators.required),
       cargoControl: new FormControl ('', Validators.required),
       regionesControl: new FormControl ('', Validators.required),
-      puntosAtencionControl: new FormControl ('', Validators.required)
-
-     });
-    }
+      puntosAtencionControl: new FormControl ('', Validators.required),
+      cargooControlObtenido: new FormControl('')
+     
+     });  
+    
+              }
+  
   // Obtener los Usuarios de base de datos
   ngOnInit(): void {
     this.UsuariosPuntosdeAtencionService.getUsuariosPuntosdeAtencion().subscribe(res=>{
@@ -132,6 +133,22 @@ agregarunUsuario() {
   $('#crearUsuario').modal('show');
 
 }
+/*
+//Método para guardar un Guardar un usuario punto de atencion
+guardarunUsuario(UsuariosPuntosdeAtencion){
+  const UsuarioARegistrar={
+    codigo_usuario_punto: 0,
+    //codigo_estado: UsuariosPuntosdeAtencion.correoControl,
+    //correo_electronico:usuariopuntoAtencion.cargoControl,
+    codigo_punto:UsuariosPuntosdeAtencion.estadoControl,
+    //dpi_usuario:usuariopuntoAtencion.codigoUsuario
+    //codigo_cargo
+    //correo_electronico
+    //fecha_creacion
+    //fecha_modificacion
+  }
+  
+}*/
 
 public aplicarFiltro (event: Event) {
   console.log(this.filtroRegionesGroup.get('regionesControl').value)
@@ -151,6 +168,10 @@ public seleccionarRegion() {
     console.error(err);
   });
 
+}
+//Metodo para obtener el valor del Cargo Seleccionado
+public seleccionarCargo() {
+  console.log(this.crearUsuarioGroup.get('cargoControl').value)
 }
 
 // Metodo para obtener el nombre y correo en base a un nit
@@ -211,3 +232,4 @@ regiones: Opciones [] = [
   }
 
 }
+
