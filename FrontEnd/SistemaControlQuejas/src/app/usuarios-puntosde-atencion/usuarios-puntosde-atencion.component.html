@@ -3,16 +3,13 @@
   <div class="estiloTitulo">
       Catálogo de Usuarios de los puntos de atención
   </div>
-  <br/>
-  <div class="col">
-    <br>
-    <button mat-raised-button class="botones" (click)="agregarunUsuario()">Agregar un Usuario</button>
-  </div>
+  <br>
+    <div class="col">
+      <button mat-raised-button class="botones" (click)="agregarunUsuario()">Agregar un Usuario</button>
+    </div>
 
   <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource">
-        
-    
         <!-- columna Nombre puntos de atencion -->
         <ng-container matColumnDef="nombrePuntoAtencion">
           <th mat-header-cell *matHeaderCellDef> Nombre del punto de atención </th>
@@ -40,8 +37,6 @@
           <th mat-header-cell *matHeaderCellDef> Estado punto de atención </th>
           <td mat-cell *matCellDef="let element"> {{element.nombre_estado}} </td>
         </ng-container>
-        
-    
         <!-- Columna accion -->
         <ng-container matColumnDef="accion">
           <th mat-header-cell *matHeaderCellDef> Acción </th>
@@ -77,13 +72,17 @@
             <mat-label>Codigo Usuario</mat-label>
             <input matInput  value="" formControlName="codigoUsuario" readonly>
           </mat-form-field>
+          <mat-form-field class="col-lg-6 col-md-6 col-sm-12" style="display: none;">
+            <mat-label>Codigo Usuario Punto</mat-label>
+            <input matInput  value="" formControlName="codigoUsuarioPunto" readonly>
+          </mat-form-field>
           <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
             <mat-label>Correo</mat-label>
             <input matInput  value="" formControlName="correoControl">
           </mat-form-field>     
             <mat-form-field  class="col-lg-6 col-md-6 col-sm-12">
               <mat-label>Cargo</mat-label>
-              <mat-select formControlName="cargoControl">
+              <mat-select formControlName="cargoControll" matNativeControl (ngModelChange)="seleccionarCargoo()">
                 <mat-option *ngFor="let cargo of CargoUsuario" [value]="cargo.value" >
                   {{cargo.viewValue}}
                 </mat-option>
@@ -145,6 +144,7 @@
             <mat-label>Nombre de la Persona Asociada al DPI</mat-label>
             <input matInput  value="" formControlName="NombreControl" readonly>
           </mat-form-field>
+          
           <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
             <mat-label>Correo</mat-label>
             <input matInput formControlName="correoControl" placeholder="correo@ejemplo.com">
@@ -166,3 +166,4 @@
     </div>
   </div>
 </div>
+

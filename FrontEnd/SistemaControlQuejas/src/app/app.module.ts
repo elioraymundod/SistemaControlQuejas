@@ -22,7 +22,8 @@ import { MenuPrincipalComponent } from './menu-principal/menu-principal.componen
     PuntosDeAtencionComponent,
     UsuariosPuntosdeAtencionComponent,
     LoginComponent,
-    MenuPrincipalComponent
+    MenuPrincipalComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -30,14 +31,15 @@ import { MenuPrincipalComponent } from './menu-principal/menu-principal.componen
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    DemoMaterialModule
+    DemoMaterialModule,
+
   ],
   providers: [
     PuntosAtencnionService,
     UsuariosPuntosdeAtencionService,
     DatePipe,
     AuthService
-  ],
+  ], 
   bootstrap: [AppComponent]
 })
 export class AppModule { }

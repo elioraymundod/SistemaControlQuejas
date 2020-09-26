@@ -17,11 +17,11 @@ module.exports={
     },    
     updateUsuariosPuntosAtencion(UsuarioPuntoAtencion){
         return new Promise((resolve,reject)=>{
-            let query='UPDATE controlquejasdb.usuarios_puntos_atencion SET correo_electronico= ?, codigo_estado = ?, codigo_cargo= ? WHERE dpi_usuario = ?';
+            let query='UPDATE controlquejasdb.usuarios_puntos_atencion SET correo_electronico= ?, codigo_estado = ?, codigo_cargo= ? WHERE codigo_usuario_punto = ?';
             con.query(query,[UsuarioPuntoAtencion.correo_electronico,
                 UsuarioPuntoAtencion.codigo_estado,
                 UsuarioPuntoAtencion.codigo_cargo,
-                UsuarioPuntoAtencion.dpi_usuario],(err,rows)=>{
+                UsuarioPuntoAtencion.codigo_usuario_punto],(err,rows)=>{
                 if(err) reject(err);
                 else resolve (true);
 
@@ -62,7 +62,18 @@ module.exports={
             })
         })
     },  
-     
+    getUsuarioActivoEnOtroPunto(dpi_usuario){
+        return new Promise((resolve,reject)=>{
+            let query='select us.*, cat.nombre_punto_atencion as nombre_punto ' +
+            'from controlquejasdb.usuarios_puntos_atencion as us ' +
+            'inner join controlquejasdb.puntos_atencion as cat on us.codigo_punto = cat.codigo_punto_atencion ' +
+            'where dpi_usuario = ? and (codigo_cargo = 14 or codigo_cargo = 15 or codigo_cargo = 16 or codigo_cargo = 18 or codigo_cargo = 19)';
+            con.query( query,[dpi_usuario],(err,rows)=> {
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    },  
    
     insertUsuarioPuntoAtencion(UsuarioPuntoAtencion){
         return new Promise((resolve,reject)=>{
