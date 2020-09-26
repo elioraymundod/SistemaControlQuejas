@@ -62,7 +62,8 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
       cargoControll: new FormControl(''),
       estadoControl: new FormControl(''),
       codigoUsuario: new FormControl(''),
-      codigoUsuarioPunto: new FormControl('')
+      codigoUsuarioPunto: new FormControl(''),
+      dpiControl: new FormControl('')
     });
     //controles para mostrar datos en base a la region seleccionada
     this.filtroRegionesGroup = this._formBuilder.group({
@@ -108,38 +109,71 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
     this.modificarUsuarioGroup.get('estadoControl').setValue(UsuarioPuntoAtencion.codigo_estado);
     this.modificarUsuarioGroup.get('codigoUsuario').setValue(UsuarioPuntoAtencion.dpi_usuario);
     this.modificarUsuarioGroup.get('codigoUsuarioPunto').setValue(UsuarioPuntoAtencion.codigo_usuario_punto);
+    this.modificarUsuarioGroup.get('dpiControl').setValue(UsuarioPuntoAtencion.dpi_usuario);
   }
 
   // Metodo para guardar los cambios al modificar un usuario
   guardarCambios(usuariopuntoAtencion) {
-    console.log('datos a editar ', usuariopuntoAtencion);
-    console.log('elcodigoesesssdfe '+usuariopuntoAtencion.codigoUsuarioPunto);
-    if (usuariopuntoAtencion.cargoControll == 17 || usuariopuntoAtencion.codigoUsuarioPunto==usuariopuntoAtencion.codigoUsuarioPunto) {
-      this.UsuariosPuntosdeAtencionService.getUsuarioActivoEnOtroPunto(usuariopuntoAtencion.codigoUsuarioPunto).subscribe(res => {
-        console.log(res.length)
-        if ( res.length != 0) {
-          console.log(res)
-          Swal.fire({
-            titleText: `Error al guardar los datos, el usuario ya existe en este punto de atencion "${res[0].nombre_punto}"`,
-            icon: 'error',
-            showCloseButton: true,
-            showConfirmButton: false
-          });
-        } 
-        else {
+    if (usuariopuntoAtencion.cargoControll == 14 || usuariopuntoAtencion.cargoControll == 15 || usuariopuntoAtencion.cargoControll == 16 || usuariopuntoAtencion.cargoControll == 18 || usuariopuntoAtencion.cargoControll == 19 || usuariopuntoAtencion.dPIControl==17) {//
+      console.log("el dpi perron es " + usuariopuntoAtencion.dpiControl)
+      this.UsuariosPuntosdeAtencionService.getUsuarioActivoEnOtroPunto(usuariopuntoAtencion.dpiControl).subscribe(res => {
+        if (res.length != 0) {
+        if (usuariopuntoAtencion.cargoControll == 17 || usuariopuntoAtencion.codigoUsuarioPunto==usuariopuntoAtencion.codigoUsuarioPunto) {
+          this.UsuariosPuntosdeAtencionService.getUsuarioActivoEnOtroPunto(usuariopuntoAtencion.codigoUsuarioPunto).subscribe(res => {
+            console.log(res.length)
+            if ( res.length != 0) {
+              console.log(res)
+              Swal.fire({
+                titleText: `Error al guardar los datos, el usuario ya existe en este punto de atencion "${res[0].nombre_punto}"`,
+                icon: 'error',
+                showCloseButton: true,
+                showConfirmButton: false
+              });
+            } 
+            else {
+              const PuntoAtencion = {
+                codigo_usuario_punto: usuariopuntoAtencion.codigoUsuarioPunto,
+                correo_electronico: usuariopuntoAtencion.correoControl,
+                codigo_cargo: usuariopuntoAtencion.cargoControll,
+                codigo_estado: usuariopuntoAtencion.estadoControl,
+                dpi_usuario: usuariopuntoAtencion.codigoUsuario,
+               fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
+                fecha_modificacion: this.datePipe.transform(this.date, "yyyy-MM-dd")
+              }
+              this.UsuariosPuntosdeAtencionService.UpdatePuntoAtencion(PuntoAtencion).subscribe(res => {
+                console.log(res);
+                $('#modificarUsuario').modal('hide');
+    
+                Swal.fire({
+                  titleText: `Datos actualizados.`,
+                  icon: 'success',
+                  showCloseButton: true,
+                  showConfirmButton: false
+                });
+                this.refrescarTabla();
+              }, err => {
+                console.error(err);
+              });
+    
+    
+            }
+          }, err => {
+            console.error(err)
+          })
+        } else {
           const PuntoAtencion = {
             codigo_usuario_punto: usuariopuntoAtencion.codigoUsuarioPunto,
             correo_electronico: usuariopuntoAtencion.correoControl,
             codigo_cargo: usuariopuntoAtencion.cargoControll,
             codigo_estado: usuariopuntoAtencion.estadoControl,
             dpi_usuario: usuariopuntoAtencion.codigoUsuario,
-           fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
+            // fecha_creacion: "",
             fecha_modificacion: this.datePipe.transform(this.date, "yyyy-MM-dd")
           }
           this.UsuariosPuntosdeAtencionService.UpdatePuntoAtencion(PuntoAtencion).subscribe(res => {
             console.log(res);
             $('#modificarUsuario').modal('hide');
-
+    
             Swal.fire({
               titleText: `Datos actualizados.`,
               icon: 'success',
@@ -150,40 +184,23 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
           }, err => {
             console.error(err);
           });
-
-
+    
+    
         }
-      }, err => {
-        console.error(err)
-      })
-    } else {
-      const PuntoAtencion = {
-        codigo_usuario_punto: usuariopuntoAtencion.codigoUsuarioPunto,
-        correo_electronico: usuariopuntoAtencion.correoControl,
-        codigo_cargo: usuariopuntoAtencion.cargoControll,
-        codigo_estado: usuariopuntoAtencion.estadoControl,
-        dpi_usuario: usuariopuntoAtencion.codigoUsuario,
-        // fecha_creacion: "",
-        fecha_modificacion: this.datePipe.transform(this.date, "yyyy-MM-dd")
-      }
-      this.UsuariosPuntosdeAtencionService.UpdatePuntoAtencion(PuntoAtencion).subscribe(res => {
-        console.log(res);
-        $('#modificarUsuario').modal('hide');
-
+      } else {
         Swal.fire({
-          titleText: `Datos actualizados.`,
-          icon: 'success',
+          titleText: `El usuario que intenta ingresar ya esta activo en este punto de atencion con un cargo asignado.`,
+          icon: 'error',
           showCloseButton: true,
           showConfirmButton: false
         });
-        this.refrescarTabla();
-      }, err => {
-        console.error(err);
-      });
-
-
-    }
+      }
+    }, err=>{
+      console.error(err)
+    })
+    
   }
+}
 
   //Método para abrir el Modal para crear un punto de atencion
   public agregarunUsuario() {
@@ -194,75 +211,89 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
 
 
   public guardarUsuario(data) {
-    console.log(data.puntosAtencionControl);
+    this.UsuariosPuntosdeAtencionService.getUsuarioByDpiAndCodigoPunto(data.DPIControl, data.puntosAtencionControl).subscribe(res=>{
+      console.log("el res perron es ")
+      console.log (res)
+      if (res.length == 0){
+          if (data.cargoControl == 14 || data.cargoControl == 15 || data.cargoControl == 16 || data.cargoControl == 18 || data.cargoControl == 19 || data.DPIControl==17) {
+            this.UsuariosPuntosdeAtencionService.getUsuarioActivoEnOtroPunto(data.DPIControl).subscribe(res => {
+              if (res.length != 0) {
+                console.log(res)
+                Swal.fire({
+                  titleText: `Error al guardar los datos, el usuario ya existe en el punto de atención "${res[0].nombre_punto}"`,
+                  icon: 'error',
+                  showCloseButton: true,
+                  showConfirmButton: false
+                });
+              } else {
+                const usuario = {
+                  codigo_usuario_punto: 0,
+                  codigo_estado: 5,
+                  codigo_punto: data.puntosAtencionControl,
+                  dpi_usuario: data.DPIControl,
+                  codigo_cargo: data.cargoControl,
+                  correo_electronico: data.correoControl,
+                  fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
+                  fecha_modificacion: ""
+                }
 
-    //Agregar un if para ya no dejar crear a una misma persona siendo jefe un un mismo punto de antención :( perdón....
-    if (data.cargoControl == 14 || data.cargoControl == 15 || data.cargoControl == 16 || data.cargoControl == 18 || data.cargoControl == 19 || data.DPIControl==17) {
-      this.UsuariosPuntosdeAtencionService.getUsuarioActivoEnOtroPunto(data.DPIControl).subscribe(res => {
-        if (res.length != 0) {
-          console.log(res)
-          Swal.fire({
-            titleText: `Error al guardar los datos, el usuario ya existe en el punto de atención "${res[0].nombre_punto}"`,
-            icon: 'error',
-            showCloseButton: true,
-            showConfirmButton: false
-          });
-        } else {
-          const usuario = {
-            codigo_usuario_punto: 0,
-            codigo_estado: 5,
-            codigo_punto: data.puntosAtencionControl,
-            dpi_usuario: data.DPIControl,
-            codigo_cargo: data.cargoControl,
-            correo_electronico: data.correoControl,
-            fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
-            fecha_modificacion: ""
+                this.UsuariosPuntosdeAtencionService.insertUsuarioPuntoAtencion(usuario).subscribe(res => {
+                  $('#crearUsuario').modal('hide');
+                  this.crearUsuarioGroup.reset();
+                  Swal.fire({
+                    titleText: `Se guardaron correctamente los datos del usuario para el punto de atención`,
+                    icon: 'success',
+                    showCloseButton: true,
+                    showConfirmButton: false
+                  });
+                  this.refrescarTabla();
+                }, err => {
+                  console.error(err)
+                })
+              }
+            }, err => {
+              console.error(err)
+            })
+          } else {
+            const usuario = {
+              codigo_usuario_punto: 0,
+              codigo_estado: 5,
+              codigo_punto: data.puntosAtencionControl,
+              dpi_usuario: data.DPIControl,
+              codigo_cargo: data.cargoControl,
+              correo_electronico: data.correoControl,
+              fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
+              fecha_modificacion: ""
+            }
+            this.UsuariosPuntosdeAtencionService.insertUsuarioPuntoAtencion(usuario).subscribe(res => {
+              $('#crearUsuario').modal('hide');
+              this.crearUsuarioGroup.reset();
+              Swal.fire({
+                titleText: `Se guardaron correctamente los datos del usuario para el punto de atención`,
+                icon: 'success',
+                showCloseButton: true,
+                showConfirmButton: false
+              });
+              this.refrescarTabla();
+            }, err => {
+              console.error(err)
+            })
           }
 
-          this.UsuariosPuntosdeAtencionService.insertUsuarioPuntoAtencion(usuario).subscribe(res => {
-            $('#crearUsuario').modal('hide');
-            this.crearUsuarioGroup.reset();
-            Swal.fire({
-              titleText: `Se guardaron correctamente los datos del usuario para el punto de atención`,
-              icon: 'success',
-              showCloseButton: true,
-              showConfirmButton: false
-            });
-            this.refrescarTabla();
-          }, err => {
-            console.error(err)
-          })
-        }
-      }, err => {
-        console.error(err)
-      })
-    } else {
-      const usuario = {
-        codigo_usuario_punto: 0,
-        codigo_estado: 5,
-        codigo_punto: data.puntosAtencionControl,
-        dpi_usuario: data.DPIControl,
-        codigo_cargo: data.cargoControl,
-        correo_electronico: data.correoControl,
-        fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
-        fecha_modificacion: ""
-      }
-      this.UsuariosPuntosdeAtencionService.insertUsuarioPuntoAtencion(usuario).subscribe(res => {
-        $('#crearUsuario').modal('hide');
-        this.crearUsuarioGroup.reset();
+          this.refrescarTabla();
+     }   else {
         Swal.fire({
-          titleText: `Se guardaron correctamente los datos del usuario para el punto de atención`,
-          icon: 'success',
+          titleText: `El usuario que intenta ingresar ya esta activo en este punto de atencion con un cargo asignado.`,
+          icon: 'error',
           showCloseButton: true,
           showConfirmButton: false
         });
-        this.refrescarTabla();
-      }, err => {
-        console.error(err)
-      })
-    }
+      }
+    }, err=>{
+      console.error(err)
+    })
 
-    this.refrescarTabla();
+
   }
 
   public aplicarFiltro (event: Event) {

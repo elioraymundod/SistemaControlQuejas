@@ -42,5 +42,9 @@ export class UsuariosPuntosdeAtencionService {
     return this.http.get<any>(`${this.baseUrl}/usuario/activo/otroPunto/${dpiUsuario}`);
    }
 
+   public getUsuarioByDpiAndCodigoPunto(dpiUsuario, codigoPunto):Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/usuario/dpi/codigoPunto/${dpiUsuario}/${codigoPunto}`);
+   }
+
 
 }

@@ -92,4 +92,20 @@ router.post('/UsuariosPuntosdeAtencion',(req,res)=>{
                     });
 });
 
+router.get('/usuario/dpi/codigoPunto/:dpi_usuario/:codigo_punto',(req,res)=>{
+    UsuariosPuntosdeAtencion.getUsuarioByDpiAndCodigoPunto(req.params.dpi_usuario, req.params.codigo_punto)
+                    .then(UsuariosPuntosdeAtencion =>{
+                        res.status(200).send(UsuariosPuntosdeAtencion);
+                        
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });           
+
+});
+
+
 module.exports= router;

@@ -90,4 +90,19 @@ router.get('/puntosAtencion/externos/internos/:codigo_punto',(req,res)=>{
 
 });
 
+router.put('/inactivarUsuarios',(req,res)=>{
+    puntosAtencion.inactivarUsuariosByPunto(req.body)
+                    .then(puntosAtencion=>{
+                        res.status(200).send({
+                            mesage:'Se actualizaron los datos correctamente'
+                        });
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al actualizar datos'
+                        });
+                    });
+});
+
 module.exports= router;

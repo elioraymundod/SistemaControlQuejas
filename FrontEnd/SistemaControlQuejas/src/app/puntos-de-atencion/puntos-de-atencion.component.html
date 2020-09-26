@@ -140,7 +140,7 @@
 
 <!-- Modal para preguntar si el usuario esta seguro de inactivar un punto de atencion-->
 <div class="modal fade" id="confirmacionDeInactivacion" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">Alerta</h5>
@@ -149,11 +149,11 @@
         </button>
       </div>
       <div class="modal-body">
-        Existen usuarios asociados al punto de atención, TODOS los usuarios serán automáticamente Inactivados. ¿Continua con el proceso de Inactivación del Punto de Atención? 
+        Existen {{contInterno}} usuarios asociados al punto de atención, TODOS los usuarios serán automáticamente Inactivados. ¿Continua con el proceso de Inactivación del Punto de Atención? 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        <button type="button" class="btn btn-primary" (click)="guardarPuntoAtencion(crearPuntoAtencionGroup.value)">Si</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="noInactivarUsuarios()">No</button>
+        <button type="button" class="btn btn-primary" (click)="inactivarUsuarios()">Si</button>
       </div>
     </div>
   </div>

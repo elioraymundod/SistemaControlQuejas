@@ -74,6 +74,16 @@ module.exports={
             })
         })
     },  
+
+    getUsuarioByDpiAndCodigoPunto(dpi_usuario, codigo_punto){
+        return new Promise((resolve,reject)=>{
+            let query='select * from controlquejasdb.usuarios_puntos_atencion where dpi_usuario = ? and codigo_punto = ?';
+            con.query( query,[dpi_usuario, codigo_punto],(err,rows)=> {
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    },  
    
     insertUsuarioPuntoAtencion(UsuarioPuntoAtencion){
         return new Promise((resolve,reject)=>{

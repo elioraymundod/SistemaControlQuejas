@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 
 @Component({
@@ -9,11 +10,19 @@ import { LoginComponent } from '../login/login.component';
 export class MenuPrincipalComponent implements OnInit {
   loginComponent: LoginComponent;
   userData: any[];
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     //this.userData = this.loginComponent.userData;
     //console.log(this.userData)
+  }
+
+  puntosAtencion(){
+    this.router.navigateByUrl('puntos-atencion')
+  }
+
+  usuariosPuntosAtencion() {
+    this.router.navigateByUrl('usuarios-puntosde-atencion')
   }
 
 }

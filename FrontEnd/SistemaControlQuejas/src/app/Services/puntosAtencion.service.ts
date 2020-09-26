@@ -29,11 +29,15 @@ export class PuntosAtencnionService {
     return this.http.get<any>(`${this.baseUrl}/puntosAtencion/codigoRegion/${codigoRegion}`);
   }
 
-  public getPuntosAtencionByNombre(nombre, region):Observable<any>{
-    return this.http.get<any>(`${this.baseUrl}/puntosAtencion/nombre/${nombre}/${region}`);
+  public getPuntosAtencionByNombre(nombre, codigo):Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/puntosAtencion/nombre/${nombre}/${codigo}`);
   }
 
   public getPuntosAtencionExternosInternosByCodigoPunto(codigoPunto):Observable<any>{
     return this.http.get<any>(`${this.baseUrl}/puntosAtencion/externos/internos/${codigoPunto}`);
   }
+
+  public inactivarUsuarios(usuario):Observable<any>{
+    return this.http.put(`${this.baseUrl}/inactivarUsuarios`,usuario)
+   }
 }
