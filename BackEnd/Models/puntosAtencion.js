@@ -45,4 +45,29 @@ module.exports={
             })
         })
     },   
+
+    getPuntosAtencionByNombre(nombre_punto_atencion, codigo_region){
+        return new Promise((resolve,reject)=>{
+            con.query( 'SELECT * FROM controlquejasdb.puntos_atencion WHERE nombre_punto_atencion = ? and codigo_region = ?', 
+            [nombre_punto_atencion, codigo_region], (err,rows)=> {
+                
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    },  
+    
+    // Metodo para traer el total de usuarios por punto y si los usuarios estan activos en un punto externo
+    getUsuariosExternosInternosByCodigoPunto(codigo_punto){
+        return new Promise((resolve,reject)=>{
+            con.query( 'select us.*, (select count(dpi_usuario) from controlquejasdb.usuarios_puntos_atencion ' + 
+            'where codigo_punto = us.codigo_punto) as conteo_interno, (select count(dpi_usuario) ' + 
+            'from controlquejasdb.usuarios_puntos_atencion where codigo_punto != us.codigo_punto and dpi_usuario = us.dpi_usuario ' + 
+            'and codigo_estado = 5) as conteo_externo from controlquejasdb.usuarios_puntos_atencion as us where codigo_punto = ? GROUP BY dpi_usuario', 
+            codigo_punto, (err,rows)=> {    
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    },  
 }

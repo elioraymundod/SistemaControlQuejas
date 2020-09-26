@@ -62,4 +62,32 @@ router.get('/puntosAtencion/codigoRegion/:codigo_region',(req,res)=>{
 
 });
 
+router.get('/puntosAtencion/nombre/:nombre_punto_atencion/:codigo_region',(req,res)=>{
+    puntosAtencion.getPuntosAtencionByNombre(req.params.nombre_punto_atencion, req.params.codigo_region)
+                    .then(puntosAtencion =>{
+                        res.status(200).send(puntosAtencion);
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });
+
+});
+
+router.get('/puntosAtencion/externos/internos/:codigo_punto',(req,res)=>{
+    puntosAtencion.getUsuariosExternosInternosByCodigoPunto(req.params.codigo_punto)
+                    .then(puntosAtencion =>{
+                        res.status(200).send(puntosAtencion);
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });
+
+});
+
 module.exports= router;

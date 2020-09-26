@@ -28,4 +28,12 @@ export class PuntosAtencnionService {
    public getPuntosAtencionByCodigo(codigoRegion):Observable<any>{
     return this.http.get<any>(`${this.baseUrl}/puntosAtencion/codigoRegion/${codigoRegion}`);
   }
+
+  public getPuntosAtencionByNombre(nombre, region):Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/puntosAtencion/nombre/${nombre}/${region}`);
+  }
+
+  public getPuntosAtencionExternosInternosByCodigoPunto(codigoPunto):Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/puntosAtencion/externos/internos/${codigoPunto}`);
+  }
 }
