@@ -23,6 +23,7 @@ app.use(morgan('dev'));
 //Router
 app.use(require('./Routers/puntosAtencion'));
 app.use(require('./Routers/UsuariosPuntosdeAtencion'));
+app.use(require('./Routers/IngresoQuejaPorUsuario'));
 app.use(require('./Routers/auth'));
 
 

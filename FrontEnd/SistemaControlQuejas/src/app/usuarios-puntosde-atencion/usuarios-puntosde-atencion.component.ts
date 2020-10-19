@@ -82,6 +82,7 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
 
     });
     this.date = new Date();
+
     
   }
 

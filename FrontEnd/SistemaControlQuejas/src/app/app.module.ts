@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,6 +14,9 @@ import { DatePipe } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './Services/auth.service';
 import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
+import { IngresoQuejaPorUsuarioService } from './Services/IngresoQuejaPorUsuario.service';
+import { IngresoQuejaPorUsuarioComponent } from './ingreso-queja-por-usuario/ingreso-queja-por-usuario.component';
+
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { MenuPrincipalComponent } from './menu-principal/menu-principal.componen
     UsuariosPuntosdeAtencionComponent,
     LoginComponent,
     MenuPrincipalComponent,
+    IngresoQuejaPorUsuarioComponent
 
   ],
   imports: [
@@ -37,6 +40,7 @@ import { MenuPrincipalComponent } from './menu-principal/menu-principal.componen
   providers: [
     PuntosAtencnionService,
     UsuariosPuntosdeAtencionService,
+    IngresoQuejaPorUsuarioService,
     DatePipe,
     AuthService
   ], 

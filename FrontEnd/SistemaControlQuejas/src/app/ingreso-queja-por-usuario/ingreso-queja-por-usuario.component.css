@@ -1,0 +1,29 @@
+.margen {
+    margin: 3%;
+}
+
+.estiloTitulo {
+    text-align: center; 
+    background: #1369a0; 
+    font-size: 150%;
+    color: white; 
+    height: 40px; 
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+table {
+    width: 100%;
+  }
+  .botones {
+    background: #1369a0; 
+    color: white; 
+}
+  
+  ::ng-deep .cdk-overlay-container{
+    z-index: 1200 !important;
+
+
+}

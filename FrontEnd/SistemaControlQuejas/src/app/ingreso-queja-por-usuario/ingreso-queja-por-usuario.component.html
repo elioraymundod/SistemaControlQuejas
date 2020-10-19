@@ -1,0 +1,67 @@
+<mat-card class="margen">
+  <div class="estiloTitulo">
+      Ingresar Queja
+  </div>
+<div class="modal-body">
+  <form [formGroup]="CrearQuejaGroup">
+    <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+      <mat-label>Nombre del Usuario</mat-label>
+      <input matInput formControlName="NombreControl">
+    </mat-form-field>
+    <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+      <mat-label>Correo</mat-label>
+      <input matInput formControlName="correoControl" placeholder="correo@ejemplo.com">
+    </mat-form-field>
+    <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="TelefonoControl">
+    </mat-form-field>
+    <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+      <mat-label>Oficina</mat-label>
+      <input matInput formControlName="OficinaControl">
+    </mat-form-field>
+    <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+      <mat-label>Nombre del Empleado</mat-label>
+      <input matInput formControlName="NombreEmpleadoControl">
+    </mat-form-field>
+    <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+      <mat-label>Detalle de la Queja</mat-label>
+      <input matInput formControlName="DetalleQuejaControl" minlength="4" maxlength="1000">
+    </mat-form-field>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <mat-label>Medio de Ingreso de la Queja</mat-label>
+      <br>
+      <div *ngFor="let medio of Medios">
+        <br>
+      <input type="radio"formControlName="MedioIngresoControl" value="{{medio.value}}"
+       (change)="opcionSeleccionada($event)">{{medio.viewValue}}
+    </div>
+    </div>   
+</form>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="abrirmodal()">Guardar</button>
+</div>
+</div>
+</mat-card>
+
+<!-- Modal de confirmacion-->
+<div class="modal fade" id="confirmacionDeEnvio" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">confirmacion</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro de su queja ingresada?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">salir</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
