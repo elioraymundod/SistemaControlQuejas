@@ -54,6 +54,7 @@ INSERT INTO `usuarios` VALUES(22222222,31,'Karla leticia Gonzales Gonzales', 'Ka
 INSERT INTO `usuarios` VALUES(33333333,32,'Gerardo Molina Silva Joc', 'GerMSJ', '1234', '2020-09-20');
 INSERT INTO `usuarios` VALUES(44444444,33,'Sol Sofia Miranda Lopez', 'Sofy234', '1234', '2020-09-20');
 INSERT INTO `usuarios` VALUES(55555555,33,'Jaime Godoy', 'JAGS', '1234', '2020-09-20');
+INSERT INTO `usuarios` VALUES(66666666,34,'Elio Isai Raymundo Diaz', 'eraymundo', '1', '2020-09-20');
 
 IINSERT INTO `usuarios_puntos_atencion` VALUES (1, 5, 1,11111111,17,'vanessa@gmail.com','2020-09-24','2020-09-25');
 INSERT INTO `usuarios_puntos_atencion` VALUES (2, 5, 2,22222222,18,'karla@gmail.com','2020-09-24','2020-09-25');

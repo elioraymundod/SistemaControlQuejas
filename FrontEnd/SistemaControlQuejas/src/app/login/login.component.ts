@@ -20,16 +20,16 @@ export class LoginComponent implements OnInit {
     this.loginFormGroup = this._formBuilder.group({
       user: new FormControl(''),
       password: new FormControl('')
-    })
+    });
    }
 
   ngOnInit(): void {
   }
 
   onLogin(data): void {
-    this.authService.login(data.user, data.password).subscribe(res=>{
+    this.authService.login(data.user, data.password).subscribe(res => {
       this.userData = res;
-      if(res.length == 0) {
+      if (res.length === 0) {
         Swal.fire({
           titleText: `Usuario o contraseña incorrectos`,
           icon: 'error',
@@ -38,9 +38,9 @@ export class LoginComponent implements OnInit {
         });
         this.loginFormGroup.reset();
       } else {
-        this.router.navigateByUrl('menu-principal')
+        this.router.navigate(['menu-principal/', res[0].rol]);
       }
-    })
+    });
   }
 
 }

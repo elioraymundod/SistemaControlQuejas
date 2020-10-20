@@ -43,7 +43,7 @@ import { IngresoQuejaPorUsuarioComponent } from './ingreso-queja-por-usuario/ing
     IngresoQuejaPorUsuarioService,
     DatePipe,
     AuthService
-  ], 
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

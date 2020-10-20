@@ -7,10 +7,10 @@ import { PuntosDeAtencionComponent } from './puntos-de-atencion/puntos-de-atenci
 import { UsuariosPuntosdeAtencionComponent } from './usuarios-puntosde-atencion/usuarios-puntosde-atencion.component';
 
 const routes: Routes = [
-  { path:'puntos-atencion', component: PuntosDeAtencionComponent},
-  { path:'usuarios-puntosde-atencion', component:UsuariosPuntosdeAtencionComponent},
-  { path:'login', component:LoginComponent },
-  { path: 'menu-principal', component: MenuPrincipalComponent},
+  { path: 'puntos-atencion', component: PuntosDeAtencionComponent},
+  { path: 'usuarios-puntosde-atencion', component: UsuariosPuntosdeAtencionComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'menu-principal/:rol', component: MenuPrincipalComponent},
   { path: 'ingreso-queja-por-usuario', component: IngresoQuejaPorUsuarioComponent}
 ];
 

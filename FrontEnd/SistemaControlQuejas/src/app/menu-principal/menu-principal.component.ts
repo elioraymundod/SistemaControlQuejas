@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 
 @Component({
@@ -10,19 +10,54 @@ import { LoginComponent } from '../login/login.component';
 export class MenuPrincipalComponent implements OnInit {
   loginComponent: LoginComponent;
   userData: any[];
-  constructor(private router: Router) { }
+  rol: string;
+  mostrarPuntosDeAtencion: boolean;
+  mostrarUsuariosPuntosDeAtencion: boolean;
+  mostrarCatalogoTiposQuejas: boolean;
+  mostrarIngresoQueja: boolean;
+  mostrarContactoQuejasDenuncias: boolean;
+  mostrarQuejasIngresadas: boolean;
+  mostrarQuejasEnProceso: boolean;
+  mostrarSeguimientoQuejas: boolean;
+
+
+  constructor(private router: Router,  private activatedRoute: ActivatedRoute) {
+    this.mostrarPuntosDeAtencion = false;
+    this.mostrarUsuariosPuntosDeAtencion = false;
+    this.mostrarCatalogoTiposQuejas = false;
+    this.mostrarIngresoQueja = false;
+    this.mostrarContactoQuejasDenuncias = false;
+    this.mostrarQuejasIngresadas = false;
+    this.mostrarQuejasEnProceso = false;
+    this.mostrarSeguimientoQuejas = false;
+   }
 
   ngOnInit(): void {
-    //this.userData = this.loginComponent.userData;
-    //console.log(this.userData)
+    this.activatedRoute.paramMap.subscribe(async res => {
+      if (res.has('rol')) {
+        this.rol = res.get('rol');
+        }
+    });
+    if (this.rol === '30') {
+      this.mostrarPuntosDeAtencion = true;
+      this.mostrarUsuariosPuntosDeAtencion = true;
+      this.mostrarCatalogoTiposQuejas = true;
+    } else if (this.rol === '33') {
+      this.mostrarIngresoQueja = true;
+    }
   }
 
-  puntosAtencion(){
-    this.router.navigateByUrl('puntos-atencion')
+  puntosAtencion(): void{
+    this.router.navigateByUrl('puntos-atencion');
   }
 
-  usuariosPuntosAtencion() {
-    this.router.navigateByUrl('usuarios-puntosde-atencion')
+  usuariosPuntosAtencion(): void {
+    this.router.navigateByUrl('usuarios-puntosde-atencion');
+  }
+
+  ingresoQueja(): void {
+    console.log('hola')
+    this.router.navigateByUrl('ingreso-queja-por-usuario');
   }
 
 }
