@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   onLogin(data): void {
     this.authService.login(data.user, data.password).subscribe(res => {
       this.userData = res;
+      console.log(this.userData);
       if (res.length === 0) {
         Swal.fire({
           titleText: `Usuario o contraseña incorrectos`,
@@ -38,7 +39,7 @@ export class LoginComponent implements OnInit {
         });
         this.loginFormGroup.reset();
       } else {
-        this.router.navigate(['menu-principal/', res[0].rol]);
+        this.router.navigate(['menu-principal/', res[0].rol, res[0].dpi_usuario]);
       }
     });
   }

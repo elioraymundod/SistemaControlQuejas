@@ -10,8 +10,8 @@ const routes: Routes = [
   { path: 'puntos-atencion', component: PuntosDeAtencionComponent},
   { path: 'usuarios-puntosde-atencion', component: UsuariosPuntosdeAtencionComponent},
   { path: 'login', component: LoginComponent },
-  { path: 'menu-principal/:rol', component: MenuPrincipalComponent},
-  { path: 'ingreso-queja-por-usuario', component: IngresoQuejaPorUsuarioComponent}
+  { path: 'menu-principal/:rol/:dpi', component: MenuPrincipalComponent},
+  { path: 'ingreso-queja-por-usuario/:dpi', component: IngresoQuejaPorUsuarioComponent}
 ];
 
 @NgModule({

@@ -11,6 +11,7 @@ export class MenuPrincipalComponent implements OnInit {
   loginComponent: LoginComponent;
   userData: any[];
   rol: string;
+  dpi: string;
   mostrarPuntosDeAtencion: boolean;
   mostrarUsuariosPuntosDeAtencion: boolean;
   mostrarCatalogoTiposQuejas: boolean;
@@ -37,6 +38,10 @@ export class MenuPrincipalComponent implements OnInit {
       if (res.has('rol')) {
         this.rol = res.get('rol');
         }
+      if (res.has('dpi')){
+        this.dpi = res.get('dpi');
+      }
+
     });
     if (this.rol === '30') {
       this.mostrarPuntosDeAtencion = true;
@@ -56,8 +61,7 @@ export class MenuPrincipalComponent implements OnInit {
   }
 
   ingresoQueja(): void {
-    console.log('hola')
-    this.router.navigateByUrl('ingreso-queja-por-usuario');
+    this.router.navigate(['ingreso-queja-por-usuario/', this.dpi]);
   }
 
 }

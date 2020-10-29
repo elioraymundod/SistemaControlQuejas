@@ -17,7 +17,7 @@
       <input matInput formControlName="TelefonoControl">
     </mat-form-field>
     <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
-      <mat-label>Oficina</mat-label>
+      <mat-label>Oficina/Agencia</mat-label>
       <input matInput formControlName="OficinaControl">
     </mat-form-field>
     <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
@@ -29,17 +29,26 @@
       <input matInput formControlName="DetalleQuejaControl" minlength="4" maxlength="1000">
     </mat-form-field>
     <div class="col-lg-6 col-md-6 col-sm-12">
+
+      <input type="file"
+             id="file"
+             (change)="handleFileInput($event.target.files)">
+    </div>
+    <br>
+    <div class="col-lg-6 col-md-6 col-sm-12">
       <mat-label>Medio de Ingreso de la Queja</mat-label>
       <br>
       <div *ngFor="let medio of Medios">
         <br>
-      <input type="radio"formControlName="MedioIngresoControl" value="{{medio.value}}"
+      <input type="radio"formControlName="MedioIngresoControl"  value="{{medio.value}}"
        (change)="opcionSeleccionada($event)">{{medio.viewValue}}
     </div>
     </div>   
+    
 </form>
+
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="abrirmodal()">Guardar</button>
+  <button type="button" class="btn btn-primary"  (click)="guardaQueja()">Guardar</button>
 </div>
 </div>
 </mat-card>
@@ -58,8 +67,8 @@
         <p>¿Está seguro de su queja ingresada?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">guardar</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">salir</button>
+        <button type="button" class="btn btn-primary"click="guardaQueja(CrearQuejaGroup.value)">guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
   </div>

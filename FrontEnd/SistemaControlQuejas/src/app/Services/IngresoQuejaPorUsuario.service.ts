@@ -7,7 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class IngresoQuejaPorUsuarioService {
   baseUrl: string;
-  constructor(private http:HttpClient) { 
-  this.baseUrl=environment.baseUrl;
+  constructor(private http: HttpClient) {
+  this.baseUrl = environment.baseUrl;
+  }
+
+
+  public getPuntosAtencion(): Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/IngresoQuejaPorUsuario/puntosAtencion`);
   }
 }
