@@ -5,6 +5,7 @@ CREATE TABLE `catalogos` (
   `nombre` varchar(250) NOT NULL,
   `descripcion` varchar(250) NOT NULL,
   `fecha_creacion` date NOT NULL,
+  `fecha_modificacion` date NULL,
   PRIMARY KEY (`codigo_catalogo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -14,6 +15,7 @@ CREATE TABLE `datos_catalogos` (
   `nombre` varchar(250) NOT NULL,
   `descripcion` varchar(250) NOT NULL,
   `fecha_creacion` date NOT NULL,
+  `fecha_modificacion` date NULL,
   PRIMARY KEY (`codigo_dato_catalogo`),
   CONSTRAINT `codigo_catalogo_a` FOREIGN KEY (`codigo_catalogo`) REFERENCES `catalogos` (`codigo_catalogo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -25,6 +27,7 @@ CREATE TABLE `tipos_quejas` (
   `siglas` varchar(10) NOT NULL,
   `descripcion_tipo_queja` varchar(250) NOT NULL,
   `fecha_creacion` date NOT NULL,
+  `fecha_modificacion` date NULL,
   PRIMARY KEY (`codigo_tipo_queja`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -34,6 +37,7 @@ CREATE TABLE `puntos_atencion` (
   `codigo_estado` int NOT NULL,  
   `nombre_punto_atencion` varchar(120) NOT NULL,
   `fecha_creacion` date NOT NULL,
+  `fecha_modificacion` date NULL,
   PRIMARY KEY (`codigo_punto_atencion`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -44,6 +48,7 @@ CREATE TABLE `usuarios` (
   `usuario` varchar(20) NOT NULL,
   `password` varchar(30) NOT NULL,
   `fecha_creacion` date NOT NULL,
+  `fecha_modificacion` date NULL,
   PRIMARY KEY (`dpi_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -55,7 +60,7 @@ CREATE TABLE `usuarios_puntos_atencion` (
   `codigo_cargo` int NOT NULL, 
   `correo_electronico` varchar(50) NOT NULL,
   `fecha_creacion` date NOT NULL,
-  `fecha_modificacion` date,
+  `fecha_modificacion` date NULL,
   PRIMARY KEY (`codigo_usuario_punto`),
   CONSTRAINT `codigo_punto_a` FOREIGN KEY (`codigo_punto`) REFERENCES `puntos_atencion` (`codigo_punto_atencion`),
   CONSTRAINT `dpi_usuario_a` FOREIGN KEY (`dpi_usuario`) REFERENCES `usuarios` (`dpi_usuario`)
@@ -77,8 +82,9 @@ CREATE TABLE `quejas` (
   `nombre_empleado` varchar(120),
   `detalle_queja` varchar(1000) NOT NULL,
   `fecha_creacion` date NOT NULL,
+  `fecha_modificacion` date NULL,
   `hora_ingreso` time NOT NULL,
   `correlativo` varchar(80),  
-  `documento_soporte` blob,
+  `documento_soporte` varchar(80),
   PRIMARY KEY (`codigo_queja`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

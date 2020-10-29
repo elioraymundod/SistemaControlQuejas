@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PuntosAtencnionService } from '../Services/puntosAtencion.service';
 import Swal from 'sweetalert2';
 import { CdkVirtualForOf } from '@angular/cdk/scrolling';
+import * as moment from 'moment';
 declare let $: any;
 
 interface Opciones {
@@ -60,20 +61,26 @@ export class PuntosDeAtencionComponent implements OnInit {
     this.refrescarTabla();
     // Indicar que se inicie con la region central seleccionada por defecto
     this.filtroRegionesGroup.get('regionesControl').setValue('Region Central');
+    console.log('La fecha es ', this.date)
   }
 
   // Metodo para abrir el modal de modificar y enviar los datos de un punto de atencion seleccionado
-  modificarPuntoAtencion(puntoAtencion) {
+  modificarPuntoAtencion(puntoAtencion): void {
     $('#modificarPuntoDeAtencion').modal('show');
     console.log(puntoAtencion);
     this.modificarPuntoAtencionGroup.get('regionControl').setValue(puntoAtencion.nombre_region);
     this.modificarPuntoAtencionGroup.get('nombrePuntoAtencionControl').setValue(puntoAtencion.nombre_punto_atencion);
     this.modificarPuntoAtencionGroup.get('estadoPuntoAtencionControl').setValue(puntoAtencion.codigo_estado);
     this.modificarPuntoAtencionGroup.get('codigoPuntoAtencion').setValue(puntoAtencion.codigo_punto_atencion);
-  } 
+  }
+
+  // Metodo para limpiar los campos de un formulario
+  limpiarDatos(): void {
+    this.crearPuntoAtencionGroup.reset();
+  }
 
   // Metodo para guardar los cambios al modificar un punto de atencion
-  guardarCambios (puntoAtencion) {
+  guardarCambios(puntoAtencion): void {
     switch (puntoAtencion.regionControl) {
       case 'Región Central':
         this.codigoRegion = 1;
@@ -88,8 +95,8 @@ export class PuntosDeAtencionComponent implements OnInit {
         this.codigoRegion = 4;
         break;
     }
-    this.puntosAtencionService.getPuntosAtencionByNombre(puntoAtencion.nombrePuntoAtencionControl, this.codigoRegion).subscribe(res=>{
-      if (res.length != 0) {
+    this.puntosAtencionService.getPuntosAtencionByNombre(puntoAtencion.nombrePuntoAtencionControl, this.codigoRegion).subscribe(res => {
+      if (res.length !== 0) {
         Swal.fire({
           titleText: `El punto de atencion que desea ingresar ya existe`,
           icon: 'error',
@@ -97,42 +104,44 @@ export class PuntosDeAtencionComponent implements OnInit {
           showConfirmButton: false
         });
       }else {
-        if (puntoAtencion.estadoPuntoAtencionControl == 6) {
-          this.puntosAtencionService.getPuntosAtencionExternosInternosByCodigoPunto(puntoAtencion.codigoPuntoAtencion).subscribe(res=>{
-            if (res.length == 0) {
+        if (puntoAtencion.estadoPuntoAtencionControl === 6) {
+          // tslint:disable-next-line: no-shadowed-variable
+          this.puntosAtencionService.getPuntosAtencionExternosInternosByCodigoPunto(puntoAtencion.codigoPuntoAtencion).subscribe(res => {
+            if (res.length === 0) {
               console.log('datos a editar ', puntoAtencion)
-              const puntosAtencion={
-                codigo_punto_atencion:puntoAtencion.codigoPuntoAtencion,
-                codigo_estado:puntoAtencion.estadoPuntoAtencionControl,
-                nombre_punto_atencion:puntoAtencion.nombrePuntoAtencionControl
-               }
-          
-              if(puntosAtencion.codigo_estado){
-                this.puntosAtencionService.UpdatePuntoAtencion(puntosAtencion).subscribe(res=>{
+              const puntosAtencion = {
+                codigo_punto_atencion: puntoAtencion.codigoPuntoAtencion,
+                codigo_estado: puntoAtencion.estadoPuntoAtencionControl,
+                nombre_punto_atencion: puntoAtencion.nombrePuntoAtencionControl,
+                fecha_modificacion: this.datePipe.transform(this.date, 'yyyy-MM-dd')
+              };
+              if (puntosAtencion.codigo_estado){
+                this.puntosAtencionService.UpdatePuntoAtencion(puntosAtencion).subscribe(res => {
                   console.log(res);
-                $('#modificarPuntoDeAtencion').modal('hide');
-                 //this.refrescarTabla();
-                 Swal.fire({
+                  $('#modificarPuntoDeAtencion').modal('hide');
+                  // this.refrescarTabla();
+                  Swal.fire({
                   titleText: `Datos actualizados.`,
                   icon: 'success',
                   showCloseButton: true,
                   showConfirmButton: false
                 });
-                this.refrescarTabla();
-               },err=>{
-                 console.error(err);
-               });
-               }
-               this.refrescarTabla();
+                  this.refrescarTabla();
+              }, err => {
+                console.error(err);
+              });
+              }
+              this.refrescarTabla();
             } else {
               let externo = 0;
-              let interno = res[0].conteo_interno;
+              const interno = res[0].conteo_interno;
               this.contInterno = interno;
+              // tslint:disable-next-line: forin
               for (let i in res) {
                 externo += res[i].conteo_externo;
               }
               this.contExterno = externo;
-              
+
               if (this.contExterno > 0) {
                 Swal.fire({
                   titleText: `No se puede desactivar este punto de atención porque contiene usuarios activos en otros puntos de atención.`,
@@ -145,43 +154,41 @@ export class PuntosDeAtencionComponent implements OnInit {
                 $('#modificarPuntoDeAtencion').modal('hide');
                 $('#confirmacionDeInactivacion').modal('show');
                 // inactivar u suarios
-                //this.inactivarUsuarios(puntoAtencion.codigoPuntoAtencion);
+                // this.inactivarUsuarios(puntoAtencion.codigoPuntoAtencion);
               }
             }
-          }, err=>{
+          }, err => {
             console.error(err);
-          })
-          
+          });
         } else {
           console.log('datos a editar ', puntoAtencion)
-          const puntosAtencion={
-            codigo_punto_atencion:puntoAtencion.codigoPuntoAtencion,
-            codigo_estado:puntoAtencion.estadoPuntoAtencionControl,
-            nombre_punto_atencion:puntoAtencion.nombrePuntoAtencionControl
-           }
-      
+          const puntosAtencion = {
+            codigo_punto_atencion: puntoAtencion.codigoPuntoAtencion,
+            codigo_estado: puntoAtencion.estadoPuntoAtencionControl,
+            nombre_punto_atencion: puntoAtencion.nombrePuntoAtencionControl,
+            fecha_modificacion: this.datePipe.transform(this.date, 'yyyy-MM-dd')
+          };
           if(puntosAtencion.codigo_estado){
-            this.puntosAtencionService.UpdatePuntoAtencion(puntosAtencion).subscribe(res=>{
+            this.puntosAtencionService.UpdatePuntoAtencion(puntosAtencion).subscribe(res => {
               console.log(res);
-            $('#modificarPuntoDeAtencion').modal('hide');
-             //this.refrescarTabla();
-             Swal.fire({
+              $('#modificarPuntoDeAtencion').modal('hide');
+              Swal.fire({
               titleText: `Datos actualizados.`,
               icon: 'success',
               showCloseButton: true,
               showConfirmButton: false
             });
-            this.refrescarTabla();
-           },err=>{
-             console.error(err);
-           });
-           }
-           this.refrescarTabla();
-        }        
+              this.refrescarTabla();
+          }, err => {
+            console.error(err);
+          });
+          }
+          this.refrescarTabla();
+        }
       }
-    }, err=>{
-      console.error(err)
-    })
+    }, err => {
+      console.error(err);
+    });
   }
 
   // Metodo para inactivar los usuarios
@@ -249,8 +256,8 @@ export class PuntosDeAtencionComponent implements OnInit {
             codigo_region: this.crearPuntoAtencionGroup.get('regionesControl').value,
             codigo_estado: 5,
             nombre_punto_atencion: this.crearPuntoAtencionGroup.get('nombrePuntoAtencionControl').value,
-            fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd")
-          }
+            fecha_creacion: this.datePipe.transform(this.date, 'yyyy-MM-dd')
+          };
           console.log(punto);
           this.puntosAtencionService.InsertPuntoAtencion(punto).subscribe(res=>{
             $('#crearPuntoDeAtencion').modal('hide');

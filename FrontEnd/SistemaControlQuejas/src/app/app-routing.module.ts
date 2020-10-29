@@ -4,6 +4,7 @@ import { IngresoQuejaPorUsuarioComponent } from './ingreso-queja-por-usuario/ing
 import { LoginComponent } from './login/login.component';
 import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
 import { PuntosDeAtencionComponent } from './puntos-de-atencion/puntos-de-atencion.component';
+import { TiposDeQuejasComponent } from './tipos-de-quejas/tipos-de-quejas.component';
 import { UsuariosPuntosdeAtencionComponent } from './usuarios-puntosde-atencion/usuarios-puntosde-atencion.component';
 
 const routes: Routes = [
@@ -11,7 +12,8 @@ const routes: Routes = [
   { path: 'usuarios-puntosde-atencion', component: UsuariosPuntosdeAtencionComponent},
   { path: 'login', component: LoginComponent },
   { path: 'menu-principal/:rol/:dpi', component: MenuPrincipalComponent},
-  { path: 'ingreso-queja-por-usuario/:dpi', component: IngresoQuejaPorUsuarioComponent}
+  { path: 'ingreso-queja-por-usuario/:dpi', component: IngresoQuejaPorUsuarioComponent},
+  { path: 'tipos-de-quejas', component: TiposDeQuejasComponent}
 ];
 
 @NgModule({

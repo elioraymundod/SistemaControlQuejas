@@ -9,6 +9,7 @@ import { AuthService } from '../Services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IngresoQuejaPorUsuarioService } from '../Services/IngresoQuejaPorUsuario.service';
 import { LoginComponent } from '../login/login.component';
+import { EnvioCorreoService } from '../Services/envio-correo.service';
 declare let $: any;
 
 
@@ -42,6 +43,7 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
   @ViewChild(LoginComponent) logincomponent: LoginComponent;
   constructor(private authService: AuthService,
               private IngresoQuejaporUsuarioService: IngresoQuejaPorUsuarioService,
+              private envioCorreoService: EnvioCorreoService,
               private router: Router,
               // tslint:disable-next-line:variable-name
               private _formBuilder: FormBuilder,
@@ -77,6 +79,20 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
     console.log(this.CrearQuejaGroup.get('MedioIngresoControl').value);
   }
 
+  // Metodo para enviar correo
+  enviarCorreo(): void{
+    const datosCorreo = {
+      paraCorreo: 'vanessa17grande@gmail.com',
+      asuntoCorreo: 'Notificación de creación de queja',
+      cuerpoCorreo: 'Señor cuentahabiente,  agradecemos su comunicación, ' +
+                    'le informamos que su queja ha sido recibida exitosamente. ' +
+                    'Para el seguimiento o cualquier consulta relacionada, no olvide que el número de su queja es QMS-1-2020.'
+    };
+    this.envioCorreoService.enviarCorreo(datosCorreo).subscribe(res => {
+      console.log('la respuesta de enivar correo es ', res);
+    });
+  }
+
   // tslint:disable-next-line:typedef
   puntosAtencion() {
     this.IngresoQuejaporUsuarioService.getPuntosAtencion().subscribe(res => {
@@ -95,7 +111,7 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   guardaQueja() {
-
+    this.enviarCorreo();
   }
 
 

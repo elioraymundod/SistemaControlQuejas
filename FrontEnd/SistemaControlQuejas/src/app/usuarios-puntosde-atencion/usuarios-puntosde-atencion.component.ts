@@ -101,7 +101,10 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
   this.filtroRegionesGroup.get('regionesControl').setValue('Region Central');
   }
 
-  
+  // Metodo para limpiar datos de los formularios
+  limpiarDatos(): void {
+    this.crearUsuarioGroup.reset();
+  }
   // Metodo para abrir el modal de modificar y enviar los datos de un punto de atencion seleccionado
   modificarUsuario(UsuarioPuntoAtencion) {
     $('#modificarUsuario').modal('show');
@@ -146,7 +149,7 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
                 $('#modificarUsuario').modal('hide');
     
                 Swal.fire({
-                  titleText: `Datos actualizados.`,
+                  titleText: `Se modificaron correctamente los datos del usuario del punto de atención.`,
                   icon: 'success',
                   showCloseButton: true,
                   showConfirmButton: false
@@ -176,7 +179,7 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
             $('#modificarUsuario').modal('hide');
     
             Swal.fire({
-              titleText: `Datos actualizados.`,
+              titleText: `Se modificaron correctamente los datos del usuario del punto de atención.`,
               icon: 'success',
               showCloseButton: true,
               showConfirmButton: false

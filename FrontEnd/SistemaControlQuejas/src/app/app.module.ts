@@ -16,6 +16,7 @@ import { AuthService } from './Services/auth.service';
 import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
 import { IngresoQuejaPorUsuarioService } from './Services/IngresoQuejaPorUsuario.service';
 import { IngresoQuejaPorUsuarioComponent } from './ingreso-queja-por-usuario/ingreso-queja-por-usuario.component';
+import { TiposDeQuejasComponent } from './tipos-de-quejas/tipos-de-quejas.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { IngresoQuejaPorUsuarioComponent } from './ingreso-queja-por-usuario/ing
     UsuariosPuntosdeAtencionComponent,
     LoginComponent,
     MenuPrincipalComponent,
-    IngresoQuejaPorUsuarioComponent
+    IngresoQuejaPorUsuarioComponent,
+    TiposDeQuejasComponent
 
   ],
   imports: [

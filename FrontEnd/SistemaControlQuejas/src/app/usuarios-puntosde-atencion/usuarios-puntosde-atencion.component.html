@@ -105,7 +105,7 @@
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="limpiarDatos()">Cancelar</button>
         <button type="button" class="btn btn-primary" (click)="guardarCambios(modificarUsuarioGroup.value)">Guardar</button>
       </div>
     </div>
@@ -164,7 +164,7 @@
           </mat-form-field>     
         </form>        
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="limpiarDatos()">Cancelar</button>
         <button type="button" class="btn btn-primary" [disabled]='crearUsuarioGroup.invalid' (click)="guardarUsuario(crearUsuarioGroup.value)">Guardar</button>
       </div>
     </div>

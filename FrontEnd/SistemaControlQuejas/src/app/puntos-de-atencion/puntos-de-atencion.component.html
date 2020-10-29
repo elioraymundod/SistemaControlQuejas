@@ -97,7 +97,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="limpiarDatos()">Cancelar</button>
         <button type="button" class="btn btn-primary" (click)="guardarCambios(modificarPuntoAtencionGroup.value)">Guardar</button>
       </div>
     </div>
@@ -131,7 +131,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="limpiarDatos()">Cancelar</button>
         <button type="button" class="btn btn-primary" (click)="guardarPuntoAtencion(crearPuntoAtencionGroup.value)">Guardar</button>
       </div>
     </div>

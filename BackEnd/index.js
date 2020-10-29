@@ -25,6 +25,7 @@ app.use(require('./Routers/puntosAtencion'));
 app.use(require('./Routers/UsuariosPuntosdeAtencion'));
 app.use(require('./Routers/IngresoQuejaPorUsuario'));
 app.use(require('./Routers/auth'));
+app.use(require('./Routers/envioCorreo'));
 
 
 app.listen(app.get('port'),()=>{
