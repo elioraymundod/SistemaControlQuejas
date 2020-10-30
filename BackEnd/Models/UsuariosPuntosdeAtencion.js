@@ -17,10 +17,11 @@ module.exports={
     },    
     updateUsuariosPuntosAtencion(UsuarioPuntoAtencion){
         return new Promise((resolve,reject)=>{
-            let query='UPDATE controlquejasdb.usuarios_puntos_atencion SET correo_electronico= ?, codigo_estado = ?, codigo_cargo= ? WHERE codigo_usuario_punto = ?';
+            let query='UPDATE controlquejasdb.usuarios_puntos_atencion SET correo_electronico= ?, codigo_estado = ?, codigo_cargo= ?, fecha_modificacion = ?  WHERE codigo_usuario_punto = ?';
             con.query(query,[UsuarioPuntoAtencion.correo_electronico,
                 UsuarioPuntoAtencion.codigo_estado,
                 UsuarioPuntoAtencion.codigo_cargo,
+                UsuarioPuntoAtencion.fecha_modificacion,
                 UsuarioPuntoAtencion.codigo_usuario_punto],(err,rows)=>{
                 if(err) reject(err);
                 else resolve (true);

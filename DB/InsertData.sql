@@ -61,3 +61,4 @@ INSERT INTO `usuarios_puntos_atencion` VALUES (2, 5, 2,22222222,18,'karla@gmail.
 INSERT INTO `usuarios_puntos_atencion` VALUES (3, 5, 3,33333333,19,'ger17@gmail.com','2020-09-24', null);
 
 INSERT INTO `tipos_quejas` values (1, 5, 'QMS', 'Quejas por Mal Servicio o servicio no conforme', '2020-10-28', null);
+INSERT INTO `tipos_quejas` values (1, 5, 'ROE', 'Reclamo por objetos extraviados ', '2020-10-29', null);

@@ -39,24 +39,11 @@ interface Opciones {
 })
 
 export class UsuariosPuntosdeAtencionComponent implements OnInit {
- 
-  displayedColumns: string[] = ['nombrePuntoAtencion', 'usuario', 'correo', 'cargo', 'estadoUsuario','accion'];
-  dataSource: any;
-  UsuariosPuntosdeAtencion: any[];
-  puntos: any[];
-  PuntosAtencionPorRegion: Opciones[];
-  modificarUsuarioGroup: FormGroup;
-  filtroRegionesGroup: FormGroup;
-  crearUsuarioGroup: FormGroup;
-  codigoRegion: number;
-  date: Date;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private UsuariosPuntosdeAtencionService: UsuariosPuntosdeAtencionService,
-    private puntosAtencionService: PuntosAtencnionService,
-    private _formBuilder: FormBuilder,
-    private datePipe: DatePipe) {
-    //controles para modificar al usuario
+              private puntosAtencionService: PuntosAtencnionService,
+              private _formBuilder: FormBuilder,
+              private datePipe: DatePipe) {
+    // controles para modificar al usuario
     this.modificarUsuarioGroup = this._formBuilder.group({
       correoControl: new FormControl(''),
       cargoControll: new FormControl(''),
@@ -65,11 +52,11 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
       codigoUsuarioPunto: new FormControl(''),
       dpiControl: new FormControl('')
     });
-    //controles para mostrar datos en base a la region seleccionada
+    // controles para mostrar datos en base a la region seleccionada
     this.filtroRegionesGroup = this._formBuilder.group({
       regionesControl: new FormControl(''),
     });
-    //controles para agregar un usuario
+    // controles para agregar un usuario
     this.crearUsuarioGroup = this._formBuilder.group({
       correoControl: new FormControl('', [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),Validators.required,]),
       DPIControl: new FormControl('', Validators.required),
@@ -85,20 +72,56 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
 
     
   }
+  displayedColumns: string[] = ['nombrePuntoAtencion', 'usuario', 'correo', 'cargo', 'estadoUsuario', 'accion'];
+  dataSource: any;
+  UsuariosPuntosdeAtencion: any[];
+  puntos: any[];
+  PuntosAtencionPorRegion: Opciones[];
+  modificarUsuarioGroup: FormGroup;
+  filtroRegionesGroup: FormGroup;
+  crearUsuarioGroup: FormGroup;
+  codigoRegion: number;
+  date: Date;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+
+  // listado de opciones para estados
+  // tslint:disable-next-line:member-ordering
+  estados: Opciones[] = [
+    { value: 5, viewValue: 'Activo' },
+    { value: 6, viewValue: 'Inactivo' }
+  ];
+  // Lista de opciones de cargos para los usuarios
+  // tslint:disable-next-line:member-ordering
+  CargoUsuario: Opciones[] = [
+    { value: 14, viewValue: 'Titular del punto de atención' },
+    { value: 15, viewValue: 'Suplente' },
+    { value: 16, viewValue: 'Encargado' },
+    { value: 17, viewValue: 'Jefe inmediato' },
+    { value: 18, viewValue: 'Receptor de quejas' },
+    { value: 19, viewValue: 'Centralizador de quejas' }
+  ];
+  // lista de opciones de las Regiones 
+  regiones: Opciones [] = [
+    {value: 1, viewValue: 'Región Central'},
+    {value: 2, viewValue: 'Región Sur'},
+    {value: 3, viewValue: 'Región Nororiente'},
+    {value: 4, viewValue: 'Región Occidente'}
+  ];
 
   // Obtener los Usuarios de base de datos
   ngOnInit(): void {
     this.UsuariosPuntosdeAtencionService.getUsuariosPuntosdeAtencion().subscribe(res => {
       this.UsuariosPuntosdeAtencion = res;
       this.dataSource = new MatTableDataSource(this.UsuariosPuntosdeAtencion);
-      this.dataSource.paginator = this.paginator;
-    
+      this.dataSource.paginator = this.paginator;   
       console.log(this.UsuariosPuntosdeAtencion);
     }, err => {
       console.log(err);
     });
     // Indicar que se inicie con la region central seleccionada por defecto
-  this.filtroRegionesGroup.get('regionesControl').setValue('Region Central');
+    this.filtroRegionesGroup.get('regionesControl').setValue('Region Central');
   }
 
   // Metodo para limpiar datos de los formularios
@@ -106,6 +129,7 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
     this.crearUsuarioGroup.reset();
   }
   // Metodo para abrir el modal de modificar y enviar los datos de un punto de atencion seleccionado
+  // tslint:disable-next-line:typedef
   modificarUsuario(UsuarioPuntoAtencion) {
     $('#modificarUsuario').modal('show');
     this.modificarUsuarioGroup.get('correoControl').setValue(UsuarioPuntoAtencion.correo_electronico);
@@ -117,23 +141,25 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
   }
 
   // Metodo para guardar los cambios al modificar un usuario
+  // tslint:disable-next-line:typedef
   guardarCambios(usuariopuntoAtencion) {
+    // tslint:disable-next-line:max-line-length
     if (usuariopuntoAtencion.cargoControll == 14 || usuariopuntoAtencion.cargoControll == 15 || usuariopuntoAtencion.cargoControll == 16 || usuariopuntoAtencion.cargoControll == 18 || usuariopuntoAtencion.cargoControll == 19 || usuariopuntoAtencion.dPIControl==17) {//
       console.log("el dpi perron es " + usuariopuntoAtencion.dpiControl)
       this.UsuariosPuntosdeAtencionService.getUsuarioActivoEnOtroPunto(usuariopuntoAtencion.dpiControl).subscribe(res => {
         if (res.length != 0) {
         if (usuariopuntoAtencion.cargoControll == 17 || usuariopuntoAtencion.codigoUsuarioPunto==usuariopuntoAtencion.codigoUsuarioPunto) {
           this.UsuariosPuntosdeAtencionService.getUsuarioActivoEnOtroPunto(usuariopuntoAtencion.codigoUsuarioPunto).subscribe(res => {
-            console.log(res.length)
+            console.log(res.length);
             if ( res.length != 0) {
-              console.log(res)
+              console.log(res);
               Swal.fire({
                 titleText: `Error al guardar los datos, el usuario ya existe en este punto de atencion "${res[0].nombre_punto}"`,
                 icon: 'error',
                 showCloseButton: true,
                 showConfirmButton: false
               });
-            } 
+            }
             else {
               const PuntoAtencion = {
                 codigo_usuario_punto: usuariopuntoAtencion.codigoUsuarioPunto,
@@ -143,11 +169,10 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
                 dpi_usuario: usuariopuntoAtencion.codigoUsuario,
                fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
                 fecha_modificacion: this.datePipe.transform(this.date, "yyyy-MM-dd")
-              }
+              };
               this.UsuariosPuntosdeAtencionService.UpdatePuntoAtencion(PuntoAtencion).subscribe(res => {
                 console.log(res);
                 $('#modificarUsuario').modal('hide');
-    
                 Swal.fire({
                   titleText: `Se modificaron correctamente los datos del usuario del punto de atención.`,
                   icon: 'success',
@@ -158,12 +183,10 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
               }, err => {
                 console.error(err);
               });
-    
-    
             }
           }, err => {
-            console.error(err)
-          })
+            console.error(err);
+          });
         } else {
           const PuntoAtencion = {
             codigo_usuario_punto: usuariopuntoAtencion.codigoUsuarioPunto,
@@ -174,10 +197,10 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
             // fecha_creacion: "",
             fecha_modificacion: this.datePipe.transform(this.date, "yyyy-MM-dd")
           }
-          this.UsuariosPuntosdeAtencionService.UpdatePuntoAtencion(PuntoAtencion).subscribe(res => {
+          this.UsuariosPuntosdeAtencionService.UpdatePuntoAtencion(PuntoAtencion).subscribe( res => {
             console.log(res);
             $('#modificarUsuario').modal('hide');
-    
+
             Swal.fire({
               titleText: `Se modificaron correctamente los datos del usuario del punto de atención.`,
               icon: 'success',
@@ -188,8 +211,7 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
           }, err => {
             console.error(err);
           });
-    
-    
+
         }
       } else {
         Swal.fire({
@@ -199,26 +221,27 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
           showConfirmButton: false
         });
       }
-    }, err=>{
-      console.error(err)
-    })
-    
+    }, err => {
+      console.error(err);
+    });
   }
 }
 
-  //Método para abrir el Modal para crear un punto de atencion
+  // Método para abrir el Modal para crear un punto de atencion
+  // tslint:disable-next-line:typedef
   public agregarunUsuario() {
     $('#crearUsuario').modal('show');
-  
 
   }
 
 
+  // tslint:disable-next-line:typedef
   public guardarUsuario(data) {
     this.UsuariosPuntosdeAtencionService.getUsuarioByDpiAndCodigoPunto(data.DPIControl, data.puntosAtencionControl).subscribe(res=>{
       console.log("el res perron es ")
       console.log (res)
       if (res.length == 0){
+          // tslint:disable-next-line:max-line-length
           if (data.cargoControl == 14 || data.cargoControl == 15 || data.cargoControl == 16 || data.cargoControl == 18 || data.cargoControl == 19 || data.DPIControl==17) {
             this.UsuariosPuntosdeAtencionService.getUsuarioActivoEnOtroPunto(data.DPIControl).subscribe(res => {
               if (res.length != 0) {
@@ -238,10 +261,10 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
                   codigo_cargo: data.cargoControl,
                   correo_electronico: data.correoControl,
                   fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
-                  fecha_modificacion: ""
+                  fecha_modificacion: this.datePipe.transform(this.date, "yyyy-MM-dd")
                 }
 
-                this.UsuariosPuntosdeAtencionService.insertUsuarioPuntoAtencion(usuario).subscribe(res => {
+                this.UsuariosPuntosdeAtencionService.insertUsuarioPuntoAtencion(usuario).subscribe( res => {
                   $('#crearUsuario').modal('hide');
                   this.crearUsuarioGroup.reset();
                   Swal.fire({
@@ -267,9 +290,9 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
               codigo_cargo: data.cargoControl,
               correo_electronico: data.correoControl,
               fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
-              fecha_modificacion: ""
+              fecha_modificacion: this.datePipe.transform(this.date, "yyyy-MM-dd")
             }
-            this.UsuariosPuntosdeAtencionService.insertUsuarioPuntoAtencion(usuario).subscribe(res => {
+            this.UsuariosPuntosdeAtencionService.insertUsuarioPuntoAtencion(usuario).subscribe( res => {
               $('#crearUsuario').modal('hide');
               this.crearUsuarioGroup.reset();
               Swal.fire({
@@ -300,6 +323,7 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
 
   }
 
+  // tslint:disable-next-line:typedef
   public aplicarFiltro (event: Event) {
     console.log(this.filtroRegionesGroup.get('regionesControl').value)
     const filterValue = this.filtroRegionesGroup.get('regionesControl').value;
@@ -308,6 +332,7 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
 
 
   // Metodo para mostrar los puntos de atencion en base a la region seleccionada
+  // tslint:disable-next-line:typedef
   public seleccionarRegion() {
     this.crearUsuarioGroup.get('puntosAtencionControl').reset();
     this.codigoRegion = this.crearUsuarioGroup.get('regionesControl').value;
@@ -319,16 +344,19 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
     });
 
   }
-  //Metodo para obtener el valor del Cargo Seleccionado en crear usuario
+  // Metodo para obtener el valor del Cargo Seleccionado en crear usuario
+  // tslint:disable-next-line:typedef
   public seleccionarCargo() {
     console.log(this.crearUsuarioGroup.get('cargoControl').value)
 
   }
-   //Metodo para obtener el valor del Cargo Seleccionado en modificar usuario
+   // Metodo para obtener el valor del Cargo Seleccionado en modificar usuario
+  // tslint:disable-next-line:typedef
   public seleccionarCargoo() {
     console.log(this.modificarUsuarioGroup.get('cargoControll').value)
   }
   // Metodo para obtener el nombre y correo en base a un nit
+  // tslint:disable-next-line:typedef
   obtenerNombreAndCorreo() {
     let dpi = this.crearUsuarioGroup.get('DPIControl').value;
     this.UsuariosPuntosdeAtencionService.getUsuarioByDpi(dpi).subscribe(res => {
@@ -351,30 +379,8 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
     })
   }
 
-
-  //listado de opciones para estados
-  estados: Opciones[] = [
-    { value: 5, viewValue: 'Activo' },
-    { value: 6, viewValue: 'Inactivo' }
-  ];
-  // Lista de opciones de cargos para los usuarios
-  CargoUsuario: Opciones[] = [
-    { value: 14, viewValue: 'Titular del punto de atención' },
-    { value: 15, viewValue: 'Suplente' },
-    { value: 16, viewValue: 'Encargado' },
-    { value: 17, viewValue: 'Jefe inmediato' },
-    { value: 18, viewValue: 'Receptor de quejas' },
-    { value: 19, viewValue: 'Centralizador de quejas' }
-  ];
-  //lista de opciones de las Regiones 
-  regiones: Opciones [] = [
-    {value: 1, viewValue: 'Región Central'},
-    {value: 2, viewValue: 'Región Sur'},
-    {value: 3, viewValue: 'Región Nororiente'},
-    {value: 4, viewValue: 'Región Occidente'}
-  ];
-
-  //Actualizar Datos Tabla
+  // Actualizar Datos Tabla
+  // tslint:disable-next-line:typedef
   refrescarTabla() {
     this.UsuariosPuntosdeAtencionService.getUsuariosPuntosdeAtencion().subscribe(res => {
       this.UsuariosPuntosdeAtencion = res;
@@ -384,8 +390,6 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
       console.log(err);
     });
   }
-
-  
 
 }
 

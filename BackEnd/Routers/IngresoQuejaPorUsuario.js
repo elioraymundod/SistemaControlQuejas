@@ -17,5 +17,48 @@ router.get('/IngresoQuejaPorUsuario/puntosAtencion',(req,res)=>{
 
 });
 
+router.get('/IngresoQuejaPorUsuario/quejas',(req,res)=>{
+    IngresoQuejaPorUsuario.getTiposQuejas()
+                    .then(IngresoQuejaPorUsuario=>{
+                        res.status(200).send(IngresoQuejaPorUsuario);
+                        console.log("tipos jas son"+res)
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });
+
+});
+router.get('/IngresoQuejaPorUsuario/medios',(req,res)=>{
+    IngresoQuejaPorUsuario.MediosIngresoDeQueja()
+                    .then(IngresoQuejaPorUsuario=>{
+                        res.status(200).send(IngresoQuejaPorUsuario);
+                        console.log("tipos medios son"+ res)
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });
+
+});
+router.post('/IngresoQuejaPorUsuario',(req,res)=>{
+    IngresoQuejaPorUsuario.InsertQuejas(req.body)
+                    .then(IngresoQuejaPorUsuario=>{
+                        res.status(200).send({
+                            mesage:' se ingresó exitosamente su queja'
+                        });
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al crear la queja'
+                        });
+                    });
+});
+
 
 module.exports= router;

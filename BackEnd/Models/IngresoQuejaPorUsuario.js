@@ -8,5 +8,31 @@ module.exports={
             })
         })
     },   
+    getTiposQuejas(){
+        return new Promise((resolve,reject)=>{
+            con.query( 'SELECT pa.* FROM controlquejasdb.tipos_quejas as pa where codigo_estado = 5 ', (err,rows)=> {
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    },   
+    MediosIngresoDeQueja(){
+        return new Promise((resolve,reject)=>{
+            con.query( 'SELECT pa.* FROM controlquejasdb.datos_catalogos as pa where codigo_catalogo = 5 ', (err,rows)=> {
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    },   
+    InsertQuejas(enviarQueja){
+        return new Promise((resolve,reject)=>{
+            let query='INSERT INTO controlquejasdb.quejas SET ?';
+            con.query(query,[enviarQueja],(err,rows)=>{
+                if(err) reject(err);
+                else resolve (true);
+            });
+        });
+    },
 }
+
 

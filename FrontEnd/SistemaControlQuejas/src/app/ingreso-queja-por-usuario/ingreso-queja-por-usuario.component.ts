@@ -10,7 +10,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IngresoQuejaPorUsuarioService } from '../Services/IngresoQuejaPorUsuario.service';
 import { LoginComponent } from '../login/login.component';
 import { EnvioCorreoService } from '../Services/envio-correo.service';
+import {ThemePalette} from '@angular/material/core';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 declare let $: any;
+// tslint:disable-next-line:no-unused-expression
 
 
 @Component({
@@ -22,11 +25,23 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
   CrearQuejaGroup: FormGroup;
   date: Date;
   data: any;
+  valor: any;
   dpi: string;
+  correo: any;
   dataSource: any;
   Opciones: any = [];
   userData: any[] = [];
   puntos: any;
+  siglas: any;
+  correlativo: any;
+  infoPuntos: any;
+  tiposquejass: any;
+  // puntosAtencion: Opciones[];
+  regionPuntosAtencion: any[];
+  PuntosAtencion: any[];
+  mediosIngresoLista: any[];
+ 
+  TiposQuejas: Opciones[];
   fileToUpload: File = null;
   Medios = [
     { value: 20, viewValue: ' Teléfono' },
@@ -36,7 +51,8 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
     { value: 24, viewValue: ' Aplicación móvil' },
     { value: 25, viewValue: ' Portal' }
   ];
-
+  
+  
   // displayedColumns: string[] = ['nombrePuntoAtencion', 'usuario', 'correo', 'cargo', 'estadoUsuario','accion'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -60,6 +76,8 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
       NombreEmpleadoControl: new FormControl(''),
       DetalleQuejaControl: new FormControl('', Validators.required),
       estadoPuntoAtencionControl: new FormControl(''),
+      // tslint:disable-next-line:new-parens
+      regionControl: new FormControl
     });
     this.date = new Date();
   }
@@ -70,19 +88,22 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
         this.dpi = res.get('dpi');
       }
     });
+    this.tiposQuejas();
     this.puntosAtencion();
+    this.MediosIngresoDeQueja();
+    this.CrearQuejaGroup.get('DetalleQuejaControl').setValue(1);
 
   }
 
   // tslint:disable-next-line:typedef
   opcionSeleccionada(event) {
-    console.log(this.CrearQuejaGroup.get('MedioIngresoControl').value);
+    console.log("el medio es", this.CrearQuejaGroup.get('MedioIngresoControl').value);
   }
 
   // Metodo para enviar correo
   enviarCorreo(): void{
     const datosCorreo = {
-      paraCorreo: 'vanessa17grande@gmail.com',
+      paraCorreo: this.correo,
       asuntoCorreo: 'Notificación de creación de queja',
       cuerpoCorreo: 'Señor cuentahabiente,  agradecemos su comunicación, ' +
                     'le informamos que su queja ha sido recibida exitosamente. ' +
@@ -96,10 +117,21 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
   // tslint:disable-next-line:typedef
   puntosAtencion() {
     this.IngresoQuejaporUsuarioService.getPuntosAtencion().subscribe(res => {
-      this.puntos = res;
-      console.log("res es", res);
-      this.CrearQuejaGroup.get('OficinaControl');
+    console.log("res es", res);
+    this.puntos = this.CrearQuejaGroup.get('OficinaControl').value;
+    for (let i in res){
+      if (res[i].codigo_punto_atencion === this.puntos){
+        this.infoPuntos = res[i];
 
+      }
+    }
+    this.PuntosAtencion= res;
+    //console.log("id del punto seleccionado: ", this.CrearQuejaGroup.get('OficinaControl').value);
+    //console.log("datos del punto seleciconado", this.infoPuntos);
+    //console.log("datos del punto seleccionado", this.puntos);
+
+   // console.log("region", this.puntos.codigo_region);
+   // console.log("punto", this.puntos.codigo_punto_atencion);
     }, err => {
       console.log(err);
 
@@ -108,38 +140,71 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
 
 
   }
-
+  // tslint:disable-next-line:typedef
+  tiposQuejas(){
+    this.IngresoQuejaporUsuarioService.getTiposQuejas().subscribe(res => {
+     // console.log("quejas son", res);
+      this.TiposQuejas = res; 
+      //console.log("id queja", this.CrearQuejaGroup.get('DetalleQuejaControl').value);
+      this.valor = this.CrearQuejaGroup.get('DetalleQuejaControl').value -1;
+      this.siglas = res[this.valor].siglas;
+      //console.log("datos queja", this.siglas);
+      this.tiposquejass =  this.TiposQuejas[this.CrearQuejaGroup.get('DetalleQuejaControl').value];
+      // console.log("datos de la queja seleccionada",this.TiposQuejas[this.CrearQuejaGroup.get('DetalleQuejaControl').value]);
+     //  this.tiposquejass=  this.TiposQuejas[this.CrearQuejaGroup.get('DetalleQuejaControl').value];
+     // console.log("siglas", this.tiposquejass.siglas );
+      // console.log("id del punto seleccionado: ", this.CrearQuejaGroup.get('OficinaControl').value);
+      // console.log("datos del punto seleccionado: ", this.PuntosAtencionPorRegion[this.CrearQuejaGroup.get('OficinaControl').value-1]);
+      // console.log("Datos del punto seleccionado", this.puntos.codigo_region);
+      }, err => {
+        console.log(err);
+      }
+      );
+  }
+  // tslint:disable-next-line:typedef
+  MediosIngresoDeQueja(){
+    this.IngresoQuejaporUsuarioService.MediosIngresoDeQueja().subscribe(res => {
+      console.log("medios ingreso", res);
+      this.mediosIngresoLista = res;
+      }, err => {
+        console.log(err); 
+      });
+  }
   // tslint:disable-next-line:typedef
   guardaQueja() {
+    /*
+    const Queja = {
+      codigo_queja: 0,
+      codigo_etapa: 7, // analisis
+      codigo_tipo_creador: 26, // cliente, 27 contribuyente
+      codigo_region_evento: this.puntos,
+      codigo_medio_ingreso: this.CrearQuejaGroup.get('MedioIngresoControl').value,
+      codigo_estado_externo: 28, // presentada
+      codigo_estado_interno: 29, // presentada
+      codigo_tipo_queja: 1 , // this.CrearQuejaGroup.get('regionesControl').value
+      codigo_punto_atencion: ,
+      dpi_usuario: this.dpi,
+      nombre: enviarQueja.NombreControl,
+      correo_electronico: enviarQueja.correoControl,
+      nombre_empleado: enviarQueja.NombreEmpleadoControl,
+      detalle_queja: enviarQueja.DetalleQuejaControl,
+      fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
+      hora_ingreso: this.datePipe.transform(this.date, "HH:mm:ss Z"),
+      correlativo: 'QMS-01_2020',//(this.tiposquejass.siglas + "-" + this.codigo_queja + "-" + this.datePipe.transform(this.date, "yyyy")),
+      documento_soporte: null
+    }
+    console.log(Queja);*/
+    this.correo = this.CrearQuejaGroup.get('correoControl');
     this.enviarCorreo();
+    this.correlativo = this.siglas + '-' + 1 + '-' + this.datePipe.transform(this.date, "yyyy");
+    this.abrirmodal();
   }
-
-
-  /*
-  const Queja = {
-    codigo_queja: 0,
-    codigo_etapa: 7,//analisis
-    codigo_tipo_creador: 26,//cliente, 27 contribuyente
-    codigo_region_evento: 0,
-    codigo_medio_ingreso: data.MedioIngresoControl,
-    codigo_estado_externo: 28,//presentada
-    codigo_estado_interno: 29,//presentada
-    codigo_tipo_queja: 0,
-    codigo_punto_atencion:0,
-    dpi_usuario:0,
-    nombre: data.NombreControl,
-    correo_electronico: data.correoControl,
-    nombre_empleado: data.NombreEmpleadoControl,
-    detalle_queja: data.DetalleQuejaControl,
-    fecha_creacion:this.datePipe.transform(this.date, "yyyy-MM-dd"),
-    hora_ingreso:'yyyy-MM-dd HH:mm:ss Z',
-    correlativo:0,
-    documento_soporte:''
-  }*/
-
   // tslint:disable-next-line:typedef
   public abrirmodal() {
     $('#confirmacionDeEnvio').modal('show');
+  }
+  limpiarDatos(): void {
+    this.CrearQuejaGroup.reset();
   }
   // tslint:disable-next-line:typedef
   handleFileInput(files: FileList) {
@@ -148,3 +213,7 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
 
 }
 
+interface Opciones {
+  value: number;
+  viewValue: string;
+}

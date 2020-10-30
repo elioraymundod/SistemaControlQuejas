@@ -17,16 +17,24 @@
       <input matInput formControlName="TelefonoControl">
     </mat-form-field>
     <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
-      <mat-label>Oficina/Agencia</mat-label>
-      <input matInput formControlName="OficinaControl">
+      <mat-label>Oficina/Agencia</mat-label>       
+      <mat-select formControlName="OficinaControl"  matNativeControl (ngModelChange)="puntosAtencion()">
+        <mat-option *ngFor="let pa of PuntosAtencion" [value]="pa.codigo_punto_atencion">
+          {{pa.nombre_punto_atencion}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
       <mat-label>Nombre del Empleado</mat-label>
       <input matInput formControlName="NombreEmpleadoControl">
     </mat-form-field>
     <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
-      <mat-label>Detalle de la Queja</mat-label>
-      <input matInput formControlName="DetalleQuejaControl" minlength="4" maxlength="1000">
+      <mat-label>Detalle de la Queja</mat-label>       
+      <mat-select formControlName="DetalleQuejaControl" matNativeControl (ngModelChange)="tiposQuejas()">
+        <mat-option *ngFor="let pa of TiposQuejas" [value]="pa.codigo_tipo_queja" >
+          {{pa.siglas}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <div class="col-lg-6 col-md-6 col-sm-12">
 
@@ -35,16 +43,16 @@
              (change)="handleFileInput($event.target.files)">
     </div>
     <br>
-    <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="form-check form-check-inline">
       <mat-label>Medio de Ingreso de la Queja</mat-label>
       <br>
       <div *ngFor="let medio of Medios">
         <br>
-      <input type="radio"formControlName="MedioIngresoControl"  value="{{medio.value}}"
+      <input class="form-check-input" type="radio"formControlName="MedioIngresoControl"  value="{{medio.value}}"
        (change)="opcionSeleccionada($event)">{{medio.viewValue}}
     </div>
-    </div>   
-    
+    </div> 
+  
 </form>
 
 <div class="modal-footer">
@@ -57,18 +65,12 @@
 <div class="modal fade" id="confirmacionDeEnvio" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog" >
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">confirmacion</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
       <div class="modal-body">
-        <p>¿Está seguro de su queja ingresada?</p>
+        <br>
+        <p>La queja número {{correlativo}} ,ha sido ingresada exitosamente al sistema de control de quejas</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary"click="guardaQueja(CrearQuejaGroup.value)">guardar</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="limpiarDatos()">añadir nueva queja</button>
       </div>
     </div>
   </div>
