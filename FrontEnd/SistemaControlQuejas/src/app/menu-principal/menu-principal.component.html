@@ -17,10 +17,10 @@
             <label  style="cursor: pointer;" (click)="usuariosPuntosAtencion()">Usuarios de puntos de atención</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4" *ngIf="mostrarCatalogoTiposQuejas">
-            <span class="material-icons" style="cursor: pointer; font-size: 200px;">
+            <span class="material-icons" style="cursor: pointer; font-size: 200px;" (click)="tiposQuejas()">
                 report
             </span><br>
-            <label  style="cursor: pointer;">Tipos de quejas</label>
+            <label  style="cursor: pointer;" (click)="tiposQuejas()">Tipos de quejas</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4" *ngIf="mostrarIngresoQueja">
             <span class="material-icons" style="cursor: pointer; font-size: 200px;" (click)="ingresoQueja()">

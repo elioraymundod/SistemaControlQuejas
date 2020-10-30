@@ -1,1 +1,161 @@
-<p>tipos-de-quejas works!</p>
+<mat-card class="margen">
+    <div class="estiloTitulo">
+        Catálogo de tipos de quejas
+    </div>
+    <br>
+    <div class="row col-lg-12 col-md-12 col-sm-12" >
+        <!--div class="col-lg-3 col-md-3 col-sm-3">
+        <form [formGroup]="filtroRegionesGroup">
+            <mat-form-field class="col-lg-12 col-md-12 col-sm-12">
+            <mat-label>Regiones</mat-label>
+            <mat-select formControlName="regionesControl" matNativeControl (ngModelChange)="aplicarFiltro($event)">
+            <mat-option *ngFor="let region of regiones" [value]="region.viewValue" >
+                {{region.viewValue}}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+        </form>
+        </div-->
+        <div class="col">
+            <button mat-raised-button class="botones" (click)="modalAgregarTipoQueja()">Agregar tipo de queja</button>
+        </div>
+    </div>
+    <br>
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource">
+        <!-- Columna siglas -->
+        <ng-container matColumnDef="siglas">
+            <th mat-header-cell *matHeaderCellDef> Siglas del tipo de queja </th>
+            <td mat-cell *matCellDef="let siglas"> {{siglas.siglas}} </td>
+        </ng-container>
+
+        <!-- columna Descripcion -->
+        <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef> Descripción del tipo de queja </th>
+            <td mat-cell *matCellDef="let descripcion"> {{descripcion.descripcion_tipo_queja}} </td>
+        </ng-container>
+
+        <!-- columna Estado -->
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef> Estado del tipo de queja </th>
+            <td mat-cell *matCellDef="let estado"> {{estado.estado_tipo_queja}} </td>
+        </ng-container>
+
+        <!-- Columna accion -->
+        <ng-container matColumnDef="accion">
+            <th mat-header-cell *matHeaderCellDef> Acción </th>
+            <td mat-cell *matCellDef="let tipoQueja">
+            <span class="material-icons" style="cursor: pointer;" (click)="modalModificarTipoQueja(tipoQueja)">
+                edit
+            </span>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
+    </div>
+</mat-card>
+
+
+<!-- Modal para crear un tipo de queja-->
+<div class="modal fade" id="crearTipoQueja" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Crear Tipo de Queja</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="crearTipoQuejaGroup">
+                    <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+                        <mat-label>Siglas del tipo de queja</mat-label>
+                        <input matInput  value="" formControlName="siglasControl" required>
+                    </mat-form-field>
+                    <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+                        <mat-label>Descripción del tipo de queja</mat-label>
+                        <input matInput  value="" formControlName="descripcionControl" required>
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="limpiarDatos()">Cancelar</button>
+                <button type="button" class="btn btn-primary" (click)="confirmarCrearTipoQueja(crearTipoQuejaGroup.value)" [disabled]='crearTipoQuejaGroup.invalid'>Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para confirmar el almacenamiento de un nuevo tipo de queja-->
+<div class="modal fade" id="confirmacionGuardar" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Confirmación</h5>
+            </div>
+            <div class="modal-body">
+                <h3>¿Está seguro de que desea guardar el tipo de queja ingresada?</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="limpiarDatos()">No</button>
+                <button type="button" class="btn btn-primary" (click)="guardarTipoQueja()" >Si</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para modificar un tipo de queja-->
+<div class="modal fade" id="modificarTipoQueja" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modificar Tipo de Queja</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="modificarTipoQuejaGroup">
+                    <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+                        <mat-label>Descripción del tipo de queja</mat-label>
+                        <input matInput  value="" formControlName="descripcionControl" required>
+                    </mat-form-field>
+                    <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+                        <mat-label>Estado del tipo de queja</mat-label>
+                        <mat-select formControlName="estadoControl">
+                            <mat-option *ngFor="let estado of estados" [value]="estado.value" >
+                                {{estado.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="limpiarDatos()">Cancelar</button>
+                <button type="button" class="btn btn-primary" (click)="confirmarModificacionTipoQueja(modificarTipoQuejaGroup.value)" [disabled]='modificarTipoQuejaGroup.invalid'>Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para confirmar la modificacion de un tipo de queja-->
+<div class="modal fade" id="confirmacionModificar" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Confirmación</h5>
+            </div>
+            <div class="modal-body">
+                <h3>¿Está seguro de guardar los cambios realizados?</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="consultarQuejasByTiposQuejas()">No</button>
+                <button type="button" class="btn btn-primary" (click)="actualizarTipoQueja()" >Si</button>
+            </div>
+        </div>
+    </div>
+</div>

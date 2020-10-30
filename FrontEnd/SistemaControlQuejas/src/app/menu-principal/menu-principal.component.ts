@@ -64,4 +64,8 @@ export class MenuPrincipalComponent implements OnInit {
     this.router.navigate(['ingreso-queja-por-usuario/', this.dpi]);
   }
 
+  tiposQuejas(): void {
+    this.router.navigate(['tipos-de-quejas']);
+  }
+
 }
