@@ -11,6 +11,9 @@ export class IngresoQuejaPorUsuarioService {
   this.baseUrl = environment.baseUrl;
   }
 
+  public getAllTiposQuejas(): Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/quejas`);
+  }
 
   public getPuntosAtencion(): Observable<any>{
     return this.http.get<any>(`${this.baseUrl}/IngresoQuejaPorUsuario/puntosAtencion`);

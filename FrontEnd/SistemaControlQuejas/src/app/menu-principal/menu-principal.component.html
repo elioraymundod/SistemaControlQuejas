@@ -29,10 +29,10 @@
             <label  style="cursor: pointer;" (click)="ingresoQueja()">Ingreso Quejas por Mal Servicio o servicio no conforme</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4" *ngIf="mostrarContactoQuejasDenuncias">
-            <span class="material-icons" style="cursor: pointer; font-size: 200px;" >
+            <span class="material-icons" style="cursor: pointer; font-size: 200px;" (click)="ingresoQuejaContribuyente()">
                 person
             </span><br>
-            <label  style="cursor: pointer;">Contacto / Quejas / Denuncias</label>
+            <label  style="cursor: pointer;" (click)="ingresoQuejaContribuyente()">Contacto / Quejas y Denuncias/Ingreso de queja por mal servicio o servicio no conforme</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4" *ngIf="mostrarQuejasIngresadas">
             <span class="material-icons" style="cursor: pointer; font-size: 200px;">

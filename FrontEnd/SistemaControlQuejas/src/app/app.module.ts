@@ -17,6 +17,7 @@ import { MenuPrincipalComponent } from './menu-principal/menu-principal.componen
 import { IngresoQuejaPorUsuarioService } from './Services/IngresoQuejaPorUsuario.service';
 import { IngresoQuejaPorUsuarioComponent } from './ingreso-queja-por-usuario/ingreso-queja-por-usuario.component';
 import { TiposDeQuejasComponent } from './tipos-de-quejas/tipos-de-quejas.component';
+import { IngresoQuejaPorContribuyenteComponent } from './ingreso-queja-por-contribuyente/ingreso-queja-por-contribuyente.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { TiposDeQuejasComponent } from './tipos-de-quejas/tipos-de-quejas.compon
     LoginComponent,
     MenuPrincipalComponent,
     IngresoQuejaPorUsuarioComponent,
-    TiposDeQuejasComponent
+    TiposDeQuejasComponent,
+    IngresoQuejaPorContribuyenteComponent
 
   ],
   imports: [

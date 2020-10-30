@@ -49,6 +49,8 @@ export class MenuPrincipalComponent implements OnInit {
       this.mostrarCatalogoTiposQuejas = true;
     } else if (this.rol === '33') {
       this.mostrarIngresoQueja = true;
+    } else if (this.rol === '31') {
+      this.mostrarContactoQuejasDenuncias = true;
     }
   }
 
@@ -68,4 +70,7 @@ export class MenuPrincipalComponent implements OnInit {
     this.router.navigate(['tipos-de-quejas']);
   }
 
+  ingresoQuejaContribuyente(): void {
+    this.router.navigate(['ingreso-queja-por-contribuyente/',  this.dpi]);
+  }
 }

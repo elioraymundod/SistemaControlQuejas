@@ -29,14 +29,18 @@
       <input matInput formControlName="NombreEmpleadoControl">
     </mat-form-field>
     <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
-      <mat-label>Detalle de la Queja</mat-label>       
+      <mat-label>Tipo queja</mat-label>       
       <mat-select formControlName="DetalleQuejaControl" matNativeControl (ngModelChange)="tiposQuejas()">
         <mat-option *ngFor="let pa of TiposQuejas" [value]="pa.codigo_tipo_queja" >
           {{pa.siglas}}
         </mat-option>
       </mat-select>
     </mat-form-field>
- 
+    <mat-form-field class="col-lg-12 col-md-12 col-sm-12">
+      <mat-label>Detalle de la Queja</mat-label>
+      <textarea matInput placeholder="Detalle de la queja." maxlength="1000" rows="4" formControlName="detalleControl" #detalle></textarea>
+      <mat-hint align="end">{{detalle.value.length}} / 1000</mat-hint>   
+    </mat-form-field>
     <div class="col-lg-6 col-md-6 col-sm-12">
       <mat-label>Medio de Ingreso de la Queja</mat-label>
       <br>
@@ -49,7 +53,8 @@
 </form>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary"  (click)="guardaQueja(CrearQuejaGroup.value)">Guardar</button>
+  <button type="button" class="btn btn-secondary" (click)="limpiarDatos()">Cancelar</button>
+  <button type="button" class="btn btn-primary"  (click)="guardaQueja(CrearQuejaGroup.value)" [disabled]="CrearQuejaGroup.invalid">Guardar</button>
 </div>
 </div>
 </mat-card>

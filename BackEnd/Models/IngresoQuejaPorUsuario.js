@@ -1,5 +1,14 @@
 const con = require('../Configs/cone');
 module.exports={ 
+    getAll(){
+        return new Promise((resolve,reject)=>{
+            con.query('SELECT pa.* FROM controlquejasdb.quejas as pa ',(err,rows)=>{
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    }, 
+
     getPuntosAtencion(){
         return new Promise((resolve,reject)=>{
             con.query( 'SELECT pa.* FROM controlquejasdb.puntos_atencion as pa where codigo_estado = 5 ', (err,rows)=> {

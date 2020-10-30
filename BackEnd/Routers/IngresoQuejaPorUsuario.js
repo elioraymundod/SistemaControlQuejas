@@ -2,6 +2,21 @@ const IngresoQuejaPorUsuario = require('../Models/IngresoQuejaPorUsuario');
 const express = require('express');
 const router = express.Router();
 
+
+router.get('/quejas',(req,res)=>{
+    IngresoQuejaPorUsuario.getAll()
+                    .then(IngresoQuejaPorUsuario=>{
+                        res.status(200).send(IngresoQuejaPorUsuario);
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });
+
+});
+
 router.get('/IngresoQuejaPorUsuario/puntosAtencion',(req,res)=>{
     IngresoQuejaPorUsuario.getPuntosAtencion()
                     .then(IngresoQuejaPorUsuario=>{
