@@ -24,6 +24,14 @@ module.exports={
             })
         })
     },   
+    correlativo(){
+        return new Promise((resolve,reject)=>{
+            con.query( 'SELECT  q.* FROM controlquejasdb.quejas as q ORDER BY codigo_queja DESC ', (err,rows)=> {
+                if(err) reject(err);
+                else resolve(rows);
+            })
+        })
+    },   
     InsertQuejas(enviarQueja){
         return new Promise((resolve,reject)=>{
             let query='INSERT INTO controlquejasdb.quejas SET ?';

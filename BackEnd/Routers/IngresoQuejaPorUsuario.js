@@ -45,6 +45,20 @@ router.get('/IngresoQuejaPorUsuario/medios',(req,res)=>{
                     });
 
 });
+router.get('/IngresoQuejaPorUsuario/correlativo',(req,res)=>{
+    IngresoQuejaPorUsuario.correlativo()
+                    .then(IngresoQuejaPorUsuario=>{
+                        res.status(200).send(IngresoQuejaPorUsuario);
+                        console.log("el correlativo es: "+ res)
+                    })
+                    .catch(err=>{
+                        console.error(err);
+                        res.status(500).send({
+                            mesage:'Error al obtener datos'
+                        });
+                    });
+
+});
 router.post('/IngresoQuejaPorUsuario',(req,res)=>{
     IngresoQuejaPorUsuario.InsertQuejas(req.body)
                     .then(IngresoQuejaPorUsuario=>{

@@ -13,7 +13,7 @@ import { EnvioCorreoService } from '../Services/envio-correo.service';
 import {ThemePalette} from '@angular/material/core';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 declare let $: any;
-// tslint:disable-next-line:no-unused-expression
+
 
 
 @Component({
@@ -91,6 +91,7 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
     this.tiposQuejas();
     this.puntosAtencion();
     this.MediosIngresoDeQueja();
+    this.obtenerCorrelativo();
     this.CrearQuejaGroup.get('DetalleQuejaControl').setValue(1);
 
   }
@@ -103,7 +104,7 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
   // Metodo para enviar correo
   enviarCorreo(): void{
     const datosCorreo = {
-      paraCorreo: this.correo,
+      paraCorreo: '1@gmail.com',
       asuntoCorreo: 'Notificación de creación de queja',
       cuerpoCorreo: 'Señor cuentahabiente,  agradecemos su comunicación, ' +
                     'le informamos que su queja ha sido recibida exitosamente. ' +
@@ -125,13 +126,9 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
 
       }
     }
-    this.PuntosAtencion= res;
+    this.PuntosAtencion = res;
     //console.log("id del punto seleccionado: ", this.CrearQuejaGroup.get('OficinaControl').value);
-    //console.log("datos del punto seleciconado", this.infoPuntos);
-    //console.log("datos del punto seleccionado", this.puntos);
-
-   // console.log("region", this.puntos.codigo_region);
-   // console.log("punto", this.puntos.codigo_punto_atencion);
+    //console.log("region del punto seleccionado", this.infoPuntos.codigo_region);
     }, err => {
       console.log(err);
 
@@ -145,17 +142,10 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
     this.IngresoQuejaporUsuarioService.getTiposQuejas().subscribe(res => {
      // console.log("quejas son", res);
       this.TiposQuejas = res; 
-      //console.log("id queja", this.CrearQuejaGroup.get('DetalleQuejaControl').value);
+     // console.log("id queja", this.CrearQuejaGroup.get('DetalleQuejaControl').value);
       this.valor = this.CrearQuejaGroup.get('DetalleQuejaControl').value -1;
       this.siglas = res[this.valor].siglas;
-      //console.log("datos queja", this.siglas);
-      this.tiposquejass =  this.TiposQuejas[this.CrearQuejaGroup.get('DetalleQuejaControl').value];
-      // console.log("datos de la queja seleccionada",this.TiposQuejas[this.CrearQuejaGroup.get('DetalleQuejaControl').value]);
-     //  this.tiposquejass=  this.TiposQuejas[this.CrearQuejaGroup.get('DetalleQuejaControl').value];
-     // console.log("siglas", this.tiposquejass.siglas );
-      // console.log("id del punto seleccionado: ", this.CrearQuejaGroup.get('OficinaControl').value);
-      // console.log("datos del punto seleccionado: ", this.PuntosAtencionPorRegion[this.CrearQuejaGroup.get('OficinaControl').value-1]);
-      // console.log("Datos del punto seleccionado", this.puntos.codigo_region);
+     // console.log("datos queja", this.siglas);
       }, err => {
         console.log(err);
       }
@@ -170,33 +160,40 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
         console.log(err); 
       });
   }
+  obtenerCorrelativo(){
+    this.IngresoQuejaporUsuarioService.correlativo().subscribe(res => {
+      console.log("el correlativo es:", res[0]);
+    }, err => {
+      console.log(err);
+    });
+  }
   // tslint:disable-next-line:typedef
-  guardaQueja() {
-    /*
+  guardaQueja(enviarQueja) {
+    this.correlativo = this.siglas + '-' + 1 + '-' + this.datePipe.transform(this.date, "yyyy");
     const Queja = {
       codigo_queja: 0,
       codigo_etapa: 7, // analisis
       codigo_tipo_creador: 26, // cliente, 27 contribuyente
-      codigo_region_evento: this.puntos,
+      codigo_region_evento: this.infoPuntos.codigo_region,
       codigo_medio_ingreso: this.CrearQuejaGroup.get('MedioIngresoControl').value,
       codigo_estado_externo: 28, // presentada
       codigo_estado_interno: 29, // presentada
-      codigo_tipo_queja: 1 , // this.CrearQuejaGroup.get('regionesControl').value
-      codigo_punto_atencion: ,
+      codigo_tipo_queja: this.CrearQuejaGroup.get('DetalleQuejaControl').value, // this.CrearQuejaGroup.get('regionesControl').value
+      codigo_punto_atencion: this.CrearQuejaGroup.get('OficinaControl').value,
       dpi_usuario: this.dpi,
       nombre: enviarQueja.NombreControl,
       correo_electronico: enviarQueja.correoControl,
       nombre_empleado: enviarQueja.NombreEmpleadoControl,
-      detalle_queja: enviarQueja.DetalleQuejaControl,
+      detalle_queja: this.siglas,
       fecha_creacion: this.datePipe.transform(this.date, "yyyy-MM-dd"),
-      hora_ingreso: this.datePipe.transform(this.date, "HH:mm:ss Z"),
-      correlativo: 'QMS-01_2020',//(this.tiposquejass.siglas + "-" + this.codigo_queja + "-" + this.datePipe.transform(this.date, "yyyy")),
+      hora_ingreso: this.datePipe.transform(this.date, "HH:mm:ss"),
+      correlativo: this.correlativo,//(this.tiposquejass.siglas + "-" + this.codigo_queja + "-" + this.datePipe.transform(this.date, "yyyy")),
       documento_soporte: null
     }
-    console.log(Queja);*/
+    console.log("datos a enviar",Queja);
     this.correo = this.CrearQuejaGroup.get('correoControl');
     this.enviarCorreo();
-    this.correlativo = this.siglas + '-' + 1 + '-' + this.datePipe.transform(this.date, "yyyy");
+    
     this.abrirmodal();
   }
   // tslint:disable-next-line:typedef

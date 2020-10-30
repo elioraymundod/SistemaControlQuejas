@@ -21,7 +21,9 @@ export class IngresoQuejaPorUsuarioService {
   public MediosIngresoDeQueja(): Observable<any>{
     return this.http.get<any>(`${this.baseUrl}/IngresoQuejaPorUsuario/medios`);
   }
-
+  public correlativo(): Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/IngresoQuejaPorUsuario/correlativo`);
+  }
   public InsertQuejas(enviarQueja): Observable<any>{
     return this.http.post(`${this.baseUrl}/IngresoQuejaPorUsuario`, enviarQueja);
    }
