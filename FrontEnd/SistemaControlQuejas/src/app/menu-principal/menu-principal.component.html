@@ -46,11 +46,11 @@
             </span><br>
             <label  style="cursor: pointer;">Quejas en proceso de atención</label>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-4" *ngIf="mostrarSeguimientoQuejas">
-            <span class="material-icons" style="cursor: pointer; font-size: 200px;">
-                arrow_forward
+        <div class="col-lg-4 col-md-4 col-sm-4" >
+            <span class="material-icons" style="cursor: pointer; font-size: 200px;" (click)="cerrarSesion()">
+                highlight_off
             </span><br>
-            <label  style="cursor: pointer;">Seguimiento quejas asignadas</label>
+            <label  style="cursor: pointer;" (click)="cerrarSesion()">Cerrar sesión</label>
         </div>
         
     </div>

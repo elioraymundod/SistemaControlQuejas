@@ -27,6 +27,7 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
   data: any;
   valor: any;
   dpi: string;
+  rol: string;
   correo: any;
   dataSource: any;
   Opciones: any = [];
@@ -88,6 +89,9 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
       if (res.has('dpi')) {
         this.dpi = res.get('dpi');
       }
+      if (res.has('rol')) {
+        this.rol = res.get('rol');
+      }
     });
     this.tiposQuejas();
     this.puntosAtencion();
@@ -95,6 +99,12 @@ export class IngresoQuejaPorUsuarioComponent implements OnInit {
     this.obtenerCorrelativo();
     this.CrearQuejaGroup.get('DetalleQuejaControl').setValue(1);
 
+  }
+
+  // Metodo para volver al menu principal
+  menuPrincipal(): void {
+    console.log(this.rol, ' ', this.dpi);
+    this.router.navigate(['menu-principal/', this.rol, this.dpi]);
   }
 
   // tslint:disable-next-line:typedef

@@ -4,11 +4,20 @@
       Catálogo de Usuarios de los puntos de atención
   </div>
   <br>
+  <div class="row col-lg-12 col-md-12 col-sm-12" >
     <div class="col">
       <button mat-raised-button class="botones" (click)="agregarunUsuario()">Agregar un Usuario</button>
     </div>
+    <div class="example-button-container">
+      <button mat-fab color="accent" (click)="menuPrincipal()">
+        <mat-icon>home</mat-icon>
+      </button>
+    </div>
+  </div>
+
     <br>
   <div class="mat-elevation-z8">
+    <br>
       <table mat-table [dataSource]="dataSource">
         <!-- columna Nombre puntos de atencion -->
         <ng-container matColumnDef="nombrePuntoAtencion">

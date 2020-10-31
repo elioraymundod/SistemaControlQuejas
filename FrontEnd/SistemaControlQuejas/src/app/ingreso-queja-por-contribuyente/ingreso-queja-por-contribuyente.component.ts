@@ -23,6 +23,7 @@ date: Date;
 data: any;
 valor: any;
 dpi: string;
+rol: string;
 correo: any;
 dataSource: any;
 Opciones: any = [];
@@ -53,7 +54,7 @@ Medios = [
 @ViewChild(LoginComponent) logincomponent: LoginComponent;
 constructor(private authService: AuthService,
             private IngresoQuejaporUsuarioService: IngresoQuejaPorUsuarioService,
-            private IngresoQuejaPorContribuyenteService: IngresoQuejaPorContribuyenteService,
+            private ingresoQuejaPorContribuyenteService: IngresoQuejaPorContribuyenteService,
             private envioCorreoService: EnvioCorreoService,
             private router: Router,
             // tslint:disable-next-line:variable-name
@@ -63,7 +64,6 @@ constructor(private authService: AuthService,
 
   // controladores para crear una queja
   this.CrearQuejaGroup = this._formBuilder.group({
-    MedioIngresoControl: new FormControl('', Validators.required),
     NombreControl: new FormControl('', Validators.required),
     correoControl: new FormControl('', [Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
     Validators.required, ]),
@@ -80,8 +80,12 @@ constructor(private authService: AuthService,
 
 ngOnInit(): void {
   this.activatedRoute.paramMap.subscribe(async res => {
+    console.log('el res es ', res)
     if (res.has('dpi')) {
       this.dpi = res.get('dpi');
+    }
+    if (res.has('rol')) {
+      this.rol = res.get('rol');
     }
   });
   this.tiposQuejas();
@@ -92,14 +96,20 @@ ngOnInit(): void {
 
 }
 
+// Metodo para volver al menu principal
+menuPrincipal(): void {
+  console.log(this.rol, ' ', this.dpi);
+  this.router.navigate(['menu-principal/', this.rol, this.dpi]);
+}
+
 // tslint:disable-next-line:typedef
 opcionSeleccionada(event) {
-  console.log('el medio es', this.CrearQuejaGroup.get('MedioIngresoControl').value);
+ // console.log('el medio es', this.CrearQuejaGroup.get('MedioIngresoControl').value);
 }
 
 // tslint:disable-next-line:typedef
 puntosAtencion() {
-  this.IngresoQuejaPorContribuyenteService.getPuntosAtencion().subscribe(res => {
+  this.ingresoQuejaPorContribuyenteService.getPuntosAtencion().subscribe(res => {
   console.log('res es', res);
   this.puntos = this.CrearQuejaGroup.get('OficinaControl').value;
   // tslint:disable-next-line: prefer-const
@@ -120,7 +130,7 @@ puntosAtencion() {
 }
 // tslint:disable-next-line:typedef
 tiposQuejas(){
-  this.IngresoQuejaPorContribuyenteService.getTiposQuejas().subscribe(res => {
+  this.ingresoQuejaPorContribuyenteService.getTiposQuejas().subscribe(res => {
    // console.log("quejas son", res);
     this.TiposQuejas = res;
    // console.log("id queja", this.CrearQuejaGroup.get('DetalleQuejaControl').value);
@@ -134,7 +144,7 @@ tiposQuejas(){
 }
 // tslint:disable-next-line:typedef
 MediosIngresoDeQueja(): void{
-  this.IngresoQuejaPorContribuyenteService.MediosIngresoDeQueja().subscribe(res => {
+  this.ingresoQuejaPorContribuyenteService.MediosIngresoDeQueja().subscribe(res => {
     console.log('medios ingreso', res);
     this.mediosIngresoLista = res;
     }, err => {
@@ -143,28 +153,28 @@ MediosIngresoDeQueja(): void{
 }
 // Metodo para obtener el correlativo
 obtenerCorrelativo(): void{
-  this.IngresoQuejaPorContribuyenteService.correlativo().subscribe(res => {
+  this.ingresoQuejaPorContribuyenteService.correlativo().subscribe(res => {
     console.log('el correlativo es:', res[0]);
   }, err => {
     console.log(err);
   });
 }
 // tslint:disable-next-line:typedef
-guardaQueja(enviarQueja) {
+  async guardaQueja(enviarQueja) {
   // tslint:disable-next-line: quotemark
-  this.IngresoQuejaPorContribuyenteService.getAllTiposQuejas().subscribe(res => {
+  console.log('Antes de la consulta');
+  await this.ingresoQuejaPorContribuyenteService.getAllTiposQuejas().toPromise().then(res => {
     this.cantidadQuejas = (res.length + 1);
+    console.log('La cantidad de quejas actual es ', this.cantidadQuejas);
     // tslint:disable-next-line: quotemark
     this.correlativo = this.siglas + '-' + this.cantidadQuejas + '-' + this.datePipe.transform(this.date, "yyyy");
-  }, err => {
-    console.error(err);
   });
   const Queja = {
     codigo_queja: 0,
     codigo_etapa: 7, // analisis
     codigo_tipo_creador: 26, // cliente, 27 contribuyente
     codigo_region_evento: this.infoPuntos.codigo_region,
-    codigo_medio_ingreso: this.CrearQuejaGroup.get('MedioIngresoControl').value,
+    codigo_medio_ingreso: 22,
     codigo_estado_externo: 28, // presentada
     codigo_estado_interno: 29, // presentada
     codigo_tipo_queja: this.CrearQuejaGroup.get('DetalleQuejaControl').value, // this.CrearQuejaGroup.get('regionesControl').value
@@ -183,8 +193,8 @@ guardaQueja(enviarQueja) {
     + this.codigo_queja + "-" + this.datePipe.transform(this.date, "yyyy")),*/
     documento_soporte: null
   };
-  console.log('datos a enviar', Queja);
-  this.IngresoQuejaPorContribuyenteService.InsertQuejas(Queja).subscribe(res => {
+  console.log('datos a enviar', Queja, ' el correlativo es ', this.correlativo);
+  this.IngresoQuejaporUsuarioService.InsertQuejas(Queja).subscribe(res => {
     this.correo = this.CrearQuejaGroup.get('correoControl').value;
     this.enviarCorreo();
     this.abrirmodal();

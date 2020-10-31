@@ -55,22 +55,26 @@ export class MenuPrincipalComponent implements OnInit {
   }
 
   puntosAtencion(): void{
-    this.router.navigateByUrl('puntos-atencion');
+    this.router.navigate(['puntos-atencion', this.rol, this.dpi]);
   }
 
   usuariosPuntosAtencion(): void {
-    this.router.navigateByUrl('usuarios-puntosde-atencion');
+    this.router.navigate(['usuarios-puntosde-atencion', this.rol, this.dpi]);
   }
 
   ingresoQueja(): void {
-    this.router.navigate(['ingreso-queja-por-usuario/', this.dpi]);
+    this.router.navigate(['ingreso-queja-por-usuario/', this.rol, this.dpi]);
   }
 
   tiposQuejas(): void {
-    this.router.navigate(['tipos-de-quejas']);
+    this.router.navigate(['tipos-de-quejas', this.rol, this.dpi]);
   }
 
   ingresoQuejaContribuyente(): void {
-    this.router.navigate(['ingreso-queja-por-contribuyente/',  this.dpi]);
+    this.router.navigate(['ingreso-queja-por-contribuyente/', this.rol, this.dpi]);
+  }
+
+  cerrarSesion(): void {
+    this.router.navigate(['login']);
   }
 }

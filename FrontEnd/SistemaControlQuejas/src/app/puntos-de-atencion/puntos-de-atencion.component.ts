@@ -7,6 +7,7 @@ import { PuntosAtencnionService } from '../Services/puntosAtencion.service';
 import Swal from 'sweetalert2';
 import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import * as moment from 'moment';
+import { ActivatedRoute, Router } from '@angular/router';
 declare let $: any;
 
 interface Opciones {
@@ -25,6 +26,8 @@ export class PuntosDeAtencionComponent implements OnInit {
   dataSource: any;
   puntosAtencion: any[];
   date: Date;
+  rol: string;
+  dpi: string;
   modificarPuntoAtencionGroup: FormGroup;
   filtroRegionesGroup: FormGroup;
   crearPuntoAtencionGroup: FormGroup;
@@ -36,7 +39,9 @@ export class PuntosDeAtencionComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private puntosAtencionService: PuntosAtencnionService,
               private _formBuilder: FormBuilder,
-              private datePipe: DatePipe) {
+              private datePipe: DatePipe,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
 
     this.modificarPuntoAtencionGroup = this._formBuilder.group({
       regionControl: new FormControl (''),
@@ -57,11 +62,26 @@ export class PuntosDeAtencionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe(async res => {
+      console.log('el res es ', res);
+      if (res.has('dpi')) {
+        this.dpi = res.get('dpi');
+      }
+      if (res.has('rol')) {
+        this.rol = res.get('rol');
+      }
+    });
     // Obtener los puntos de atencion de base de datos
     this.refrescarTabla();
     // Indicar que se inicie con la region central seleccionada por defecto
     this.filtroRegionesGroup.get('regionesControl').setValue('Region Central');
     console.log('La fecha es ', this.date)
+  }
+
+  // Metodo para volver al menu principal
+  menuPrincipal(): void {
+    console.log(this.rol, ' ', this.dpi);
+    this.router.navigate(['menu-principal/', this.rol, this.dpi]);
   }
 
   // Metodo para abrir el modal de modificar y enviar los datos de un punto de atencion seleccionado

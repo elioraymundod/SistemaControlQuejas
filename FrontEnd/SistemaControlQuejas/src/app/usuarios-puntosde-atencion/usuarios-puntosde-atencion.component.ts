@@ -11,6 +11,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { isGeneratedFile } from '@angular/compiler/src/aot/util';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from '../app.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -39,9 +40,13 @@ interface Opciones {
 })
 
 export class UsuariosPuntosdeAtencionComponent implements OnInit {
+  dpi: string;
+  rol: string;
   constructor(private UsuariosPuntosdeAtencionService: UsuariosPuntosdeAtencionService,
               private puntosAtencionService: PuntosAtencnionService,
               private _formBuilder: FormBuilder,
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
               private datePipe: DatePipe) {
     // controles para modificar al usuario
     this.modificarUsuarioGroup = this._formBuilder.group({
@@ -112,6 +117,15 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
 
   // Obtener los Usuarios de base de datos
   ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe(async res => {
+      console.log('el res es ', res);
+      if (res.has('dpi')) {
+        this.dpi = res.get('dpi');
+      }
+      if (res.has('rol')) {
+        this.rol = res.get('rol');
+      }
+    });
     this.UsuariosPuntosdeAtencionService.getUsuariosPuntosdeAtencion().subscribe(res => {
       this.UsuariosPuntosdeAtencion = res;
       this.dataSource = new MatTableDataSource(this.UsuariosPuntosdeAtencion);
@@ -123,6 +137,12 @@ export class UsuariosPuntosdeAtencionComponent implements OnInit {
     // Indicar que se inicie con la region central seleccionada por defecto
     this.filtroRegionesGroup.get('regionesControl').setValue('Region Central');
   }
+
+  // Metodo para volver al menu principal
+menuPrincipal(): void {
+  console.log(this.rol, ' ', this.dpi);
+  this.router.navigate(['menu-principal/', this.rol, this.dpi]);
+}
 
   // Metodo para limpiar datos de los formularios
   limpiarDatos(): void {

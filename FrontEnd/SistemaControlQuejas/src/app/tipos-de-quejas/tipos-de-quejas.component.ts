@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { TiposQuejasService } from '../Services/tipos-quejas.service';
 declare let $: any;
@@ -20,7 +21,9 @@ interface Opciones {
 export class TiposDeQuejasComponent implements OnInit {
   // tslint:disable-next-line: variable-name
   constructor(private _formBuilder: FormBuilder, private tiposQuejasService: TiposQuejasService,
-              private datePipe: DatePipe) {
+              private datePipe: DatePipe,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
     this.crearTipoQuejaGroup = this._formBuilder.group({
       siglasControl: new FormControl('', Validators.required),
       descripcionControl: new FormControl('', Validators.required)
@@ -43,6 +46,8 @@ export class TiposDeQuejasComponent implements OnInit {
   dataSource: any;
   displayedColumns: string[] = ['siglas', 'descripcion', 'estado', 'accion'];
   date: Date;
+  rol: string;
+  dpi: string;
   nuevoTipoQueja: any;
   datosActualizar: any;
   tipoQueja: any;
@@ -57,6 +62,15 @@ export class TiposDeQuejasComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe(async res => {
+      console.log('el res es ', res);
+      if (res.has('dpi')) {
+        this.dpi = res.get('dpi');
+      }
+      if (res.has('rol')) {
+        this.rol = res.get('rol');
+      }
+    });
     this.obtenerTiposQuejas();
   }
 
@@ -65,6 +79,12 @@ export class TiposDeQuejasComponent implements OnInit {
     $('#crearTipoQueja').modal('show');
     $('#crearTipoQueja').modal('hide');
   }
+
+    // Metodo para volver al menu principal
+    menuPrincipal(): void {
+      console.log(this.rol, ' ', this.dpi);
+      this.router.navigate(['menu-principal/', this.rol, this.dpi]);
+    }
 
   // Metodo para guardar un tipo de queja ingresado
   guardarTipoQueja(): void {

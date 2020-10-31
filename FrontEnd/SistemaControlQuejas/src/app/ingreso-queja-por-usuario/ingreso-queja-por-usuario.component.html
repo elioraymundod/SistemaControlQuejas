@@ -55,6 +55,11 @@
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" (click)="limpiarDatos()">Cancelar</button>
   <button type="button" class="btn btn-primary"  (click)="guardaQueja(CrearQuejaGroup.value)" [disabled]="CrearQuejaGroup.invalid">Guardar</button>
+  <div class="example-button-container">
+    <button mat-fab color="accent" (click)="menuPrincipal()">
+      <mat-icon>home</mat-icon>
+    </button>
+  </div>
 </div>
 </div>
 </mat-card>
@@ -68,7 +73,7 @@
         <p>La queja número {{correlativo}} ,ha sido ingresada exitosamente al sistema de control de quejas</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="limpiarDatos()">añadir nueva queja</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="limpiarDatos()">Añadir nueva queja</button>
       </div>
     </div>
   </div>
