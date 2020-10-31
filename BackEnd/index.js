@@ -24,6 +24,7 @@ app.use(morgan('dev'));
 app.use(require('./Routers/puntosAtencion'));
 app.use(require('./Routers/UsuariosPuntosdeAtencion'));
 app.use(require('./Routers/IngresoQuejaPorUsuario'));
+app.use(require('./Routers/IngresoQuejaPorContribuyente'));
 app.use(require('./Routers/auth'));
 app.use(require('./Routers/envioCorreo'));
 app.use(require('./Routers/tiposQuejas'));

@@ -1,1 +1,77 @@
-<p>ingreso-queja-por-contribuyente works!</p>
+<mat-card class="margen">
+    <div class="estiloTitulo">
+        Ingresar Queja
+    </div>
+  <div class="modal-body">
+    <form [formGroup]="CrearQuejaGroup">
+      <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+        <mat-label>Nombre del Usuario</mat-label>
+        <input matInput formControlName="NombreControl">
+      </mat-form-field>
+      <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+        <mat-label>Correo</mat-label>
+        <input matInput formControlName="correoControl" placeholder="correo@ejemplo.com">
+      </mat-form-field>
+      <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="TelefonoControl">
+      </mat-form-field>
+      <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+        <mat-label>Oficina/Agencia</mat-label>       
+        <mat-select formControlName="OficinaControl"  matNativeControl (ngModelChange)="puntosAtencion()">
+          <mat-option *ngFor="let pa of PuntosAtencion" [value]="pa.codigo_punto_atencion">
+            {{pa.nombre_punto_atencion}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+        <mat-label>Nombre del Empleado</mat-label>
+        <input matInput formControlName="NombreEmpleadoControl">
+      </mat-form-field>
+      <mat-form-field class="col-lg-6 col-md-6 col-sm-12">
+        <mat-label>Tipo queja</mat-label>       
+        <mat-select formControlName="DetalleQuejaControl" matNativeControl (ngModelChange)="tiposQuejas()">
+          <mat-option *ngFor="let pa of TiposQuejas" [value]="pa.codigo_tipo_queja" >
+            {{pa.siglas}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="col-lg-12 col-md-12 col-sm-12">
+        <mat-label>Detalle de la Queja</mat-label>
+        <textarea matInput placeholder="Detalle de la queja." maxlength="1000" rows="4" formControlName="detalleControl" #detalle></textarea>
+        <mat-hint align="end">{{detalle.value.length}} / 1000</mat-hint>   
+      </mat-form-field>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <mat-label>Medio de Ingreso de la Queja</mat-label>
+        <br>
+        <div *ngFor="let medio of Medios">
+          <br>
+        <input type="radio"formControlName="MedioIngresoControl"  value="{{medio.value}}"
+         (change)="opcionSeleccionada($event)">{{medio.viewValue}}
+      </div>
+      </div> 
+  </form>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="limpiarDatos()">Cancelar</button>
+    <button type="button" class="btn btn-primary"  (click)="guardaQueja(CrearQuejaGroup.value)" [disabled]="CrearQuejaGroup.invalid">Guardar</button>
+  </div>
+  </div>
+  </mat-card>
+  
+  <!-- Modal de confirmacion-->
+  <div class="modal fade" id="confirmacionDeEnvio" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+      <div class="modal-content">
+        <div class="modal-body">
+          <br>
+          <p>La queja número {{correlativo}} ,ha sido ingresada exitosamente al sistema de control de quejas</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="limpiarDatos()">añadir nueva queja</button>
+        </div>
+      </div>
+    </div>
+  </div>
+      
+  

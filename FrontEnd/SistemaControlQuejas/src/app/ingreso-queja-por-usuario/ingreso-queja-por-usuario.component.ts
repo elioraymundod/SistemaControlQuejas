@@ -2,16 +2,12 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
-import { PuntosAtencnionService } from '../Services/puntosAtencion.service';
-import { UsuariosPuntosdeAtencionService } from '../Services/UsuariosPuntosdeAtencion.service';
-import Swal from 'sweetalert2';
 import { AuthService } from '../Services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IngresoQuejaPorUsuarioService } from '../Services/IngresoQuejaPorUsuario.service';
 import { LoginComponent } from '../login/login.component';
 import { EnvioCorreoService } from '../Services/envio-correo.service';
-import {ThemePalette} from '@angular/material/core';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
+
 declare let $: any;
 
 
